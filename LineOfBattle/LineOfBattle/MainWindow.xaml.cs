@@ -23,7 +23,7 @@ namespace LineOfBattle
   {
     private Canvas GameCanvas;
     private DispatcherTimer Timer;
-    private Random Rand;
+    private Game GameInstance;
 
     /// <summary>
     /// 初期化処理
@@ -32,38 +32,26 @@ namespace LineOfBattle
     {
       InitializeComponent();
 
-      StackPanel panel = new StackPanel();
-      GameCanvas = new Canvas();
-      GameCanvas.Width = 800;
-      GameCanvas.Height = 600;
-
-      panel.Children.Add( GameCanvas );
+      var panel = new StackPanel();
+      panel.Children.Add( new Canvas() { Width = 800, Height = 600 } );
       this.Content = panel;
+
+      GameInstance = new LineOfBattle.Game( GameCanvas );
 
       Timer = new DispatcherTimer();
       Timer.Interval = TimeSpan.FromMilliseconds( 1 );
       Timer.Tick += new EventHandler( MainLoop );
       Timer.Start();
-
-      Rand = new Random();
     }
 
     /// <summary>
-    /// ゲームループ
+    /// DispatcherTimer によって呼び出されるイベントハンドラ
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void MainLoop( object sender, EventArgs e )
     {
-      GameCanvas.Children.Clear();
-
-      Ellipse ellipse = new Ellipse();
-      ellipse.Fill = new SolidColorBrush( Color.FromRgb( 255, 0, 0 ) );
-      ellipse.Width = Rand.Next( 10, 100 );
-      ellipse.Height = Rand.Next( 10, 100 );
-      Canvas.SetTop( ellipse, Rand.Next( 10, 100 ) );
-      Canvas.SetLeft( ellipse, Rand.Next( 10, 100 ) );
-      this.GameCanvas.Children.Add( ellipse );
+      GameInstance.MainLoop();
     }
   }
 }
