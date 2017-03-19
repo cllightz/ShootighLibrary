@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LineOfBattle;
 
 namespace LineOfBattle
 {
@@ -23,7 +24,6 @@ namespace LineOfBattle
   {
     private Canvas GameCanvas;
     private DispatcherTimer Timer;
-    private Game GameInstance;
 
     /// <summary>
     /// 初期化処理
@@ -33,15 +33,30 @@ namespace LineOfBattle
       InitializeComponent();
 
       var panel = new StackPanel();
-      panel.Children.Add( new Canvas() { Width = 800, Height = 600 } );
+
+      GameCanvas = new Canvas() {
+        Width = 800,
+        Height = 600,
+        Focusable = true
+      };
+
+      panel.Children.Add( GameCanvas );
+
       this.Content = panel;
 
-      GameInstance = new LineOfBattle.Game( GameCanvas );
+      Game.Initialize( GameCanvas );
 
       Timer = new DispatcherTimer();
       Timer.Interval = TimeSpan.FromMilliseconds( 1 );
       Timer.Tick += new EventHandler( MainLoop );
       Timer.Start();
+
+      KeyDown += KeyDownEventHandler;
+      KeyUp += KeyUpEventHandler;
+
+      MouseDown += MouseDownEventHandler;
+      MouseUp += MouseUpEventHandler;
+      MouseMove += MouseMoveEventHandler;
     }
 
     /// <summary>
@@ -51,7 +66,102 @@ namespace LineOfBattle
     /// <param name="e"></param>
     private void MainLoop( object sender, EventArgs e )
     {
-      GameInstance.MainLoop();
+      Game.MainLoop();
+    }
+
+    /// <summary>
+    /// キーを押した時のイベントを処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void KeyDownEventHandler( object sender, KeyEventArgs e )
+    {
+      switch ( e.Key ) {
+        case System.Windows.Input.Key.W:
+          Key.W = true;
+          break;
+
+        case System.Windows.Input.Key.A:
+          Key.A = true;
+          break;
+
+        case System.Windows.Input.Key.S:
+          Key.S = true;
+          break;
+
+        case System.Windows.Input.Key.D:
+          Key.D = true;
+          break;
+      }
+    }
+
+    /// <summary>
+    /// キーを離した時のイベントを処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void KeyUpEventHandler( object sender, KeyEventArgs e )
+    {
+      switch ( e.Key ) {
+        case System.Windows.Input.Key.W:
+          Key.W = false;
+          break;
+
+        case System.Windows.Input.Key.A:
+          Key.A = false;
+          break;
+
+        case System.Windows.Input.Key.S:
+          Key.S = false;
+          break;
+
+        case System.Windows.Input.Key.D:
+          Key.D = false;
+          break;
+      }
+    }
+
+    /// <summary>
+    /// マウスボタンを押した時のイベントを処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void MouseDownEventHandler( object sender, MouseButtonEventArgs e )
+    {
+      switch ( e.ChangedButton ) {
+        case MouseButton.Left:
+          Mouse.Left = true;
+          break;
+
+        case MouseButton.Right:
+          Mouse.Right = true;
+          break;
+      }
+    }
+
+    /// <summary>
+    /// マウスボタンを離した時のイベントを処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void MouseUpEventHandler( object sender, MouseButtonEventArgs e )
+    {
+      switch ( e.ChangedButton ) {
+        case MouseButton.Left:
+          Mouse.Left = false;
+          break;
+
+        case MouseButton.Right:
+          Mouse.Right = false;
+          break;
+      }
+    }
+
+    private void MouseMoveEventHandler( object sender, MouseEventArgs e )
+    {
+      var pos = e.GetPosition( GameCanvas );
+      Mouse.X = pos.X;
+      Mouse.Y = pos.Y;
     }
   }
 }
