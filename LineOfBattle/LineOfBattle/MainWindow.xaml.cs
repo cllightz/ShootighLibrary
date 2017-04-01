@@ -56,7 +56,7 @@ namespace LineOfBattle
 
       MouseDown += MouseDownEventHandler;
       MouseUp += MouseUpEventHandler;
-      MouseMove += MouseMoveEventHandler;
+      // MouseMove += MouseMoveEventHandler;
     }
 
     /// <summary>
@@ -157,6 +157,11 @@ namespace LineOfBattle
       }
     }
 
+    /// <summary>
+    /// マウスカーソルを動かした時のイベントを処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MouseMoveEventHandler( object sender, MouseEventArgs e )
     {
       var pos = e.GetPosition( GameCanvas );

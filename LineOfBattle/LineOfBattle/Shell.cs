@@ -40,7 +40,7 @@ namespace LineOfBattle
 
       Canvas.SetLeft( ellipse, Position.X );
       Canvas.SetTop( ellipse, Position.Y );
-      Game.Canvas.Children.Add( ellipse );
+      Game.Buffer.Add( ellipse );
     }
   }
 }

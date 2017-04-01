@@ -8,20 +8,21 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using SharpDX.Direct2D1;
 
 namespace LineOfBattle
 {
   /// <summary>
   /// ゲームのロジック
   /// </summary>
-  static class Game
+  class Game : D2dControl.D2dControl
   {
     public static Canvas Canvas;
+    public static List<UIElement> Buffer;
     public static Random Rand;
 
     public static ScheneState State;
@@ -31,6 +32,8 @@ namespace LineOfBattle
     public static List<Shell> EnemiesShells;
     public static ulong FrameCount;
 
+    private static System.Diagnostics.Stopwatch Watch;
+
     /// <summary>
     /// 初期化処理
     /// </summary>
@@ -38,6 +41,7 @@ namespace LineOfBattle
     public static void Initialize( Canvas canvas )
     {
       Canvas = canvas;
+      Buffer = new List<UIElement>();
       Rand = new Random();
       State = ScheneState.TITLE;
 
@@ -57,6 +61,9 @@ namespace LineOfBattle
       AlliesShells = new List<Shell>();
       EnemiesShells = new List<Shell>();
       FrameCount = 0;
+
+      Watch = new System.Diagnostics.Stopwatch();
+      Watch.Start();
     }
 
     /// <summary>
@@ -64,15 +71,15 @@ namespace LineOfBattle
     /// </summary>
     public static void MainLoop()
     {
-      Canvas.Children.Clear();
+      Buffer.Clear();
 
-      Canvas.Children.Add( new Rectangle() {
+      Buffer.Add( new Rectangle() {
         Width = Canvas.Width,
         Height = Canvas.Height,
         Stroke = Brushes.Black,
         Fill = new SolidColorBrush( Color.FromRgb( 0, 0, 0 ) ),
       } );
-      
+
       switch ( State ) {
         case ScheneState.TITLE:
           DrawTitle();
@@ -97,6 +104,16 @@ namespace LineOfBattle
 
         case ScheneState.RESULT:
           break;
+      }
+
+      Canvas.Children.Clear();
+
+      Watch.Stop();
+      // DrawText( $"{1000.0 / Watch.Elapsed.Milliseconds:00.00}", 20, -200, 0 );
+      Watch.Restart();
+
+      foreach( var e in Buffer ) {
+        Canvas.Children.Add( e );
       }
     }
 
@@ -161,15 +178,9 @@ namespace LineOfBattle
       }
     }
 
-    private static void CalculateAlliesShellsCollision()
-    {
+    private static void CalculateAlliesShellsCollision() { }
 
-    }
-
-    private static void CalculateEnemiesShellsCollision()
-    {
-
-    }
+    private static void CalculateEnemiesShellsCollision() { }
 
     private static void DrawEnemies()
     {
@@ -228,7 +239,12 @@ namespace LineOfBattle
 
       Canvas.SetLeft( control, x );
       Canvas.SetTop( control, y );
-      Canvas.Children.Add( control );
+      Buffer.Add( control );
+    }
+
+    public override void Render( RenderTarget target )
+    {
+      throw new NotImplementedException();
     }
   }
 }
