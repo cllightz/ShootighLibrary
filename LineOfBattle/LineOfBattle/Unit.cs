@@ -1,64 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 
 namespace LineOfBattle
 {
   class Unit
   {
-    public Vector Position;
-    private List<Vector> History;
-    private int HistoryLength = 20;
-    public double Size;
-    public SolidColorBrush Brush;
+    public RawVector2 Position;
+    private List<RawVector2> History;
+    private const int HistoryLength = 20;
+    public float Size;
+    public RawColor4 Color;
 
-    public Unit( Vector pos, double size, SolidColorBrush brush )
+    public Unit( RawVector2 pos, float size, RawColor4 color )
     {
       Position = pos;
-      History = new List<Vector>();
+      History = new List<RawVector2>();
       Size = size;
-      Brush = brush;
+      Color = color;
     }
 
-    public void Move( Vector newPos )
+    public void Move( RawVector2 newpos )
     {
-      History.Add( new Vector( Position.X, Position.Y ) );
-      Position = new Vector( newPos.X, newPos.Y );
+      History.Add( new RawVector2() { X = Position.X, Y = Position.Y } );
+      Position = newpos;
     }
 
-    public void MoveV( Vector v )
+    public void MoveV( RawVector2 v )
     {
-      History.Add( new Vector( Position.X, Position.Y ) );
-      Position = new Vector( Position.X + v.X, Position.Y + v.Y );
+      History.Add( new RawVector2() { X = Position.X, Y = Position.Y } );
+      Position.X += v.X;
+      Position.Y += v.Y;
     }
 
     public bool HasFollowPos { get { return History.Count >= HistoryLength; } }
 
-    public Vector GetFollowPos()
+    public RawVector2 GetFollowPos()
     {
-      Vector res = History.First();
+      RawVector2 res = History.First();
       History.RemoveAt( 0 );
       return res;
     }
 
     public void Draw()
     {
-      var ellipse = new Ellipse() {
-        Fill = Brush,
-        Width = Size,
-        Height = Size,
-      };
-
-      Canvas.SetLeft( ellipse, Position.X );
-      Canvas.SetTop( ellipse, Position.Y );
-      Game.Buffer.Add( ellipse );
+      Globals.Game.Target.DrawEllipse( new Ellipse( Position, Size, Size ), new SolidColorBrush( Globals.Game.Target, Color ) );
     }
   }
 }

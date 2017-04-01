@@ -5,4 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LineOfBattle"
         mc:Ignorable="d"
-        Title="Line of Battle" Width="816" Height="639" />
+        Title="Line of Battle" Height="350" Width="525">
+	<Grid>
+		<local:Game x:Name="gameControl" />
+	</Grid>
+</Window>

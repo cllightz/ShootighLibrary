@@ -22,8 +22,7 @@ namespace LineOfBattle
   /// </summary>
   public partial class MainWindow : Window
   {
-    private Canvas GameCanvas;
-    private DispatcherTimer Timer;
+    // private DispatcherTimer Timer;
 
     /// <summary>
     /// 初期化処理
@@ -32,31 +31,12 @@ namespace LineOfBattle
     {
       InitializeComponent();
 
-      var panel = new StackPanel();
-
-      GameCanvas = new Canvas() {
-        Width = 800,
-        Height = 600,
-        Focusable = true
-      };
-
-      panel.Children.Add( GameCanvas );
-
-      this.Content = panel;
-
-      Game.Initialize( GameCanvas );
-
-      Timer = new DispatcherTimer();
-      Timer.Interval = TimeSpan.FromMilliseconds( 1 );
-      Timer.Tick += new EventHandler( MainLoop );
-      Timer.Start();
-
       KeyDown += KeyDownEventHandler;
       KeyUp += KeyUpEventHandler;
 
       MouseDown += MouseDownEventHandler;
       MouseUp += MouseUpEventHandler;
-      // MouseMove += MouseMoveEventHandler;
+      MouseMove += MouseMoveEventHandler;
     }
 
     /// <summary>
@@ -66,7 +46,7 @@ namespace LineOfBattle
     /// <param name="e"></param>
     private void MainLoop( object sender, EventArgs e )
     {
-      Game.MainLoop();
+      // Game.MainLoop();
     }
 
     /// <summary>
@@ -164,9 +144,9 @@ namespace LineOfBattle
     /// <param name="e"></param>
     private void MouseMoveEventHandler( object sender, MouseEventArgs e )
     {
-      var pos = e.GetPosition( GameCanvas );
-      Mouse.X = pos.X;
-      Mouse.Y = pos.Y;
+      var pos = e.GetPosition( gameControl );
+      Mouse.X = (float)pos.X;
+      Mouse.Y = (float)pos.Y;
     }
   }
 }

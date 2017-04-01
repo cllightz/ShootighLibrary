@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDX.Mathematics.Interop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,12 +18,15 @@ namespace LineOfBattle
 
     public static bool AnyDirection { get { return W || A || S || D; } }
 
-    public static Vector Direction {
+    public static RawVector2 Direction {
       get {
-        double x = (A ? -1 : 0) + (D ? 1 : 0);
-        double y = (W ? -1 : 0) + (S ? 1 : 0);
+        float x = (A ? -1 : 0) + (D ? 1 : 0);
+        float y = (W ? -1 : 0) + (S ? 1 : 0);
+        var norm = (float)Math.Sqrt( x*x + y*y );
+        x = (norm == 0) ? 0 : x / norm;
+        y = (norm == 0) ? 0 : y / norm;
 
-        return new Vector( x, y );
+        return new RawVector2() { X = x, Y = y };
       }
     }
   }

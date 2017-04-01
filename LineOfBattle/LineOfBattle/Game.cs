@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
+using SharpDX.DirectWrite;
 
 namespace LineOfBattle
 {
@@ -21,41 +23,37 @@ namespace LineOfBattle
   /// </summary>
   class Game : D2dControl.D2dControl
   {
-    public static Canvas Canvas;
-    public static List<UIElement> Buffer;
-    public static Random Rand;
+    public RenderTarget Target;
 
-    public static ScheneState State;
-    public static AlliesLine Allies;
-    public static List<Unit> Enemies;
-    public static List<Shell> AlliesShells;
-    public static List<Shell> EnemiesShells;
-    public static ulong FrameCount;
+    public Random Rand = new Random();
+
+    public ScheneState State;
+    public AlliesLine Allies;
+    public List<Unit> Enemies;
+    public List<Shell> AlliesShells;
+    public List<Shell> EnemiesShells;
+    public ulong FrameCount;
 
     private static System.Diagnostics.Stopwatch Watch;
 
-    /// <summary>
-    /// 初期化処理
-    /// </summary>
-    /// <param name="canvas"></param>
-    public static void Initialize( Canvas canvas )
+    public Game()
     {
-      Canvas = canvas;
-      Buffer = new List<UIElement>();
-      Rand = new Random();
+      Globals.Game = this;
+
       State = ScheneState.TITLE;
 
       Allies = new AlliesLine();
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
-      Allies.Add( new LineOfBattle.Unit( new Vector( Canvas.Width/2, Canvas.Height/2 ), 10, new SolidColorBrush( Color.FromRgb( 0, 255, 0 ) ) ) );
+      var center = new RawVector2() { X = (float)ActualWidth/2, Y = (float)ActualHeight/2 };
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+      Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
 
       Enemies = new List<Unit>();
       AlliesShells = new List<Shell>();
@@ -69,16 +67,12 @@ namespace LineOfBattle
     /// <summary>
     /// ゲームループ
     /// </summary>
-    public static void MainLoop()
+    public override void Render( RenderTarget target )
     {
-      Buffer.Clear();
-
-      Buffer.Add( new Rectangle() {
-        Width = Canvas.Width,
-        Height = Canvas.Height,
-        Stroke = Brushes.Black,
-        Fill = new SolidColorBrush( Color.FromRgb( 0, 0, 0 ) ),
-      } );
+      Target = target;
+      GC.Collect();
+      System.Diagnostics.Debug.WriteLine( resCache.Count );
+      target.Clear( new RawColor4( 0, 0, 0, 1 ) );
 
       switch ( State ) {
         case ScheneState.TITLE:
@@ -106,45 +100,39 @@ namespace LineOfBattle
           break;
       }
 
-      Canvas.Children.Clear();
-
-      Watch.Stop();
-      // DrawText( $"{1000.0 / Watch.Elapsed.Milliseconds:00.00}", 20, -200, 0 );
-      Watch.Restart();
-
-      foreach( var e in Buffer ) {
-        Canvas.Children.Add( e );
-      }
+      DrawText( Fps.ToString(), 12, 10, 01 );
     }
 
-    private static void MoveEnemies()
+    private void MoveEnemies()
     {
       foreach ( var u in Enemies ) {
         
       }
     }
 
-    private static void Shoot()
+    private void Shoot()
     {
       if ( Mouse.Any && FrameCount % 10 == 0 ) {
         foreach ( var u in Allies.Units ) {
-          var cursor = new Vector( Mouse.X, Mouse.Y );
-          var posL = new Vector( u.Position.X, u.Position.Y );
-          var posR = new Vector( Allies.Units.First().Position.X, Allies.Units.First().Position.Y );
-          var posLR = Vector.Divide( Vector.Add( posL, posR ), 2.0 );
-          var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : new Vector( 0, 0 ) );
+          var cursor = new RawVector2() { X = Mouse.X, Y = Mouse.Y };
+          var posL = new RawVector2() { X = u.Position.X, Y = u.Position.Y };
+          var posR = new RawVector2() { X = Allies.Units.First().Position.X, Y = Allies.Units.First().Position.Y };
+          var posLR = new RawVector2() { X = (posL.X + posR.X) / 2, Y = (posL.Y + posR.Y) / 2 };
+          var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : new RawVector2() { X = 0, Y = 0 } );
 
-          var direction = Vector.Subtract( cursor, pos );
-          direction.Normalize();
+          var direction = new RawVector2() { X = cursor.X - pos.X, Y = cursor.Y - pos.Y };
+          var norm = (float)Math.Sqrt( direction.X * direction.X + direction.Y * direction.Y );
+          direction.X = (norm == 0) ? 0 : direction.X / norm;
+          direction.Y = (norm == 0) ? 0 : direction.Y / norm;
 
-          var v = Vector.Multiply( 5.0, direction );
+          var v = new RawVector2() { X = 5 * direction.X, Y = 5 * direction.Y };
 
-          AlliesShells.Add( new Shell( u.Position, v, 5.0, new SolidColorBrush( Color.FromRgb( 0, 255, 255 ) ) ) );
+          AlliesShells.Add( new Shell( u.Position, v, 5, new RawColor4( 0, 1, 1, 1 ) ) );
         }
       }
     }
 
-    private static void MoveAlliesShells()
+    private void MoveAlliesShells()
     {
       foreach ( var s in AlliesShells ) {
         s.Move();
@@ -155,14 +143,14 @@ namespace LineOfBattle
           var x = AlliesShells[i].Position.X;
           var y = AlliesShells[i].Position.Y;
 
-          if ( x < -100 || Canvas.Width+100 < x || y < -100 || Canvas.Height+100 < y ) {
+          if ( x < -100 || Target.Size.Width+100 < x || y < -100 || Target.Size.Height+100 < y ) {
             AlliesShells.RemoveAt( i );
           }
         }
       }
     }
 
-    private static void MoveEnemiesShells()
+    private void MoveEnemiesShells()
     {
       foreach ( var s in EnemiesShells ) {
         s.Move();
@@ -172,31 +160,31 @@ namespace LineOfBattle
         var x = EnemiesShells[i].Position.X;
         var y = EnemiesShells[i].Position.Y;
 
-        if ( x < -100 || Canvas.Width+100 < x || y < -100 || Canvas.Height+100 < y ) {
+        if ( x < -100 || Target.Size.Width+100 < x || y < -100 || Target.Size.Height+100 < y ) {
           EnemiesShells.RemoveAt( i );
         }
       }
     }
 
-    private static void CalculateAlliesShellsCollision() { }
+    private void CalculateAlliesShellsCollision() { }
 
-    private static void CalculateEnemiesShellsCollision() { }
+    private void CalculateEnemiesShellsCollision() { }
 
-    private static void DrawEnemies()
+    private void DrawEnemies()
     {
       foreach ( var u in Enemies ) {
         u.Draw();
       }
     }
 
-    private static void DrawAlliesShells()
+    private void DrawAlliesShells()
     {
       foreach ( var s in AlliesShells ) {
         s.Draw();
       }
     }
 
-    private static void DrawEnemiesShells()
+    private void DrawEnemiesShells()
     {
       foreach ( var s in EnemiesShells ) {
         s.Draw();
@@ -206,7 +194,7 @@ namespace LineOfBattle
     /// <summary>
     /// タイトル画面の描画
     /// </summary>
-    private static void DrawTitle()
+    private void DrawTitle()
     {
       DrawText( "Line of Battle", 50, 0, 200 );
       DrawText( "Press Left Mouse Button to Start", 25, 0, 300 );
@@ -223,28 +211,13 @@ namespace LineOfBattle
     /// <param name="size"></param>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    private static void DrawText( string text, double size, double x, double y )
+    private void DrawText( string text, float size, float x, float y )
     {
-      var control = new ContentControl() {
-        Width = Canvas.Width,
-        Height = size,
-        Content = new TextBlock() {
-          Text = text,
-          FontSize = size,
-          Foreground = new SolidColorBrush( Color.FromRgb( 255, 255, 255 ) ),
-          HorizontalAlignment = HorizontalAlignment.Center,
-          VerticalAlignment = VerticalAlignment.Center,
-        },
-      };
-
-      Canvas.SetLeft( control, x );
-      Canvas.SetTop( control, y );
-      Buffer.Add( control );
-    }
-
-    public override void Render( RenderTarget target )
-    {
-      throw new NotImplementedException();
+      using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", 12 ) )
+      using ( var brush = new SolidColorBrush( Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
+        var rect = new RawRectangleF( x, y, x + Target.Size.Width, y + size );
+        Target.DrawText( text, format, rect, brush );
+      }
     }
   }
 }
