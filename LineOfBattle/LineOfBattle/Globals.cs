@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LineOfBattle
 {
-  class Globals
-  {
-    public static Game Game;
-  }
+    class Globals
+    {
+        public static Game Game;
+    }
 }

@@ -7,12 +7,12 @@ using System.Windows;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("LineOfBattle")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle( "Line of Battle" )]
+[assembly: AssemblyDescription("キーボードとマウスで操作する大行列シューティング")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LineOfBattle")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("ろうでん")]
+[assembly: AssemblyProduct( "Line of Battle" )]
+[assembly: AssemblyCopyright("Copyright © 2017 ろうでん")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace LineOfBattle
 {
-  enum ScheneState
-  {
-    TITLE,
-    BATTLE,
-    RESULT,
-  }
+    enum ScheneState
+    {
+        TITLE,
+        BATTLE,
+        RESULT,
+    }
 }
