@@ -67,14 +67,14 @@ namespace LineOfBattle
         /// <summary>
         /// ゲームループ
         /// </summary>
-        public override void Render(RenderTarget target)
+        public override void Render( RenderTarget target )
         {
             Target = target;
             GC.Collect();
             System.Diagnostics.Debug.WriteLine( resCache.Count );
             target.Clear( new RawColor4( 0, 0, 0, 1 ) );
 
-            switch (State) {
+            switch ( State ) {
                 case ScheneState.TITLE:
                     DrawTitle();
                     break;
@@ -105,15 +105,15 @@ namespace LineOfBattle
 
         private void MoveEnemies()
         {
-            foreach (var u in Enemies) {
+            foreach ( var u in Enemies ) {
 
             }
         }
 
         private void Shoot()
         {
-            if (Mouse.Any && FrameCount % 10 == 0) {
-                foreach (var u in Allies.Units) {
+            if ( Mouse.Any && FrameCount % 10 == 0 ) {
+                foreach ( var u in Allies.Units ) {
                     var cursor = new RawVector2() { X = Mouse.X, Y = Mouse.Y };
                     var posL = new RawVector2() { X = u.Position.X, Y = u.Position.Y };
                     var posR = new RawVector2() { X = Allies.Units.First().Position.X, Y = Allies.Units.First().Position.Y };
@@ -134,16 +134,16 @@ namespace LineOfBattle
 
         private void MoveAlliesShells()
         {
-            foreach (var s in AlliesShells) {
+            foreach ( var s in AlliesShells ) {
                 s.Move();
             }
 
-            if (AlliesShells.Any()) {
-                for (int i = AlliesShells.Count - 1; 0 <= i; i--) {
+            if ( AlliesShells.Any() ) {
+                for ( int i = AlliesShells.Count - 1; 0 <= i; i-- ) {
                     var x = AlliesShells[ i ].Position.X;
                     var y = AlliesShells[ i ].Position.Y;
 
-                    if (x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y) {
+                    if ( x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y ) {
                         AlliesShells.RemoveAt( i );
                     }
                 }
@@ -152,15 +152,15 @@ namespace LineOfBattle
 
         private void MoveEnemiesShells()
         {
-            foreach (var s in EnemiesShells) {
+            foreach ( var s in EnemiesShells ) {
                 s.Move();
             }
 
-            for (int i = EnemiesShells.Count - 1; 0 <= i; i++) {
+            for ( int i = EnemiesShells.Count - 1; 0 <= i; i++ ) {
                 var x = EnemiesShells[ i ].Position.X;
                 var y = EnemiesShells[ i ].Position.Y;
 
-                if (x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y) {
+                if ( x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y ) {
                     EnemiesShells.RemoveAt( i );
                 }
             }
@@ -172,21 +172,21 @@ namespace LineOfBattle
 
         private void DrawEnemies()
         {
-            foreach (var u in Enemies) {
+            foreach ( var u in Enemies ) {
                 u.Draw();
             }
         }
 
         private void DrawAlliesShells()
         {
-            foreach (var s in AlliesShells) {
+            foreach ( var s in AlliesShells ) {
                 s.Draw();
             }
         }
 
         private void DrawEnemiesShells()
         {
-            foreach (var s in EnemiesShells) {
+            foreach ( var s in EnemiesShells ) {
                 s.Draw();
             }
         }
@@ -199,7 +199,7 @@ namespace LineOfBattle
             DrawText( "Line of Battle", 50, 0, 200 );
             DrawText( "Press Left Mouse Button to Start", 25, 0, 300 );
 
-            if (Mouse.Left) {
+            if ( Mouse.Left ) {
                 State = ScheneState.BATTLE;
             }
         }
@@ -211,10 +211,10 @@ namespace LineOfBattle
         /// <param name="size"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        private void DrawText(string text, float size, float x, float y)
+        private void DrawText( string text, float size, float x, float y )
         {
-            using (var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", 12 ))
-            using (var brush = new SolidColorBrush( Target, new RawColor4( 1, 1, 1, 1 ) )) {
+            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", 12 ) )
+            using ( var brush = new SolidColorBrush( Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
                 var rect = new RawRectangleF( x, y, x + Target.Size.Width, y + size );
                 Target.DrawText( text, format, rect, brush );
             }

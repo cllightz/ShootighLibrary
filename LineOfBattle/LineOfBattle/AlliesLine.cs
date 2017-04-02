@@ -20,24 +20,24 @@ namespace LineOfBattle
             UnitAdditionQueue = new Queue<Unit>();
         }
 
-        public void Add(Unit u)
+        public void Add( Unit u )
         {
             UnitAdditionQueue.Enqueue( u );
         }
 
         public void Move()
         {
-            if (Units.Any() && Key.AnyDirection) {
+            if ( Units.Any() && Key.AnyDirection ) {
                 Units[ 0 ].MoveV( new RawVector2() { X = 2 * Key.Direction.X, Y = 2 * Key.Direction.Y } );
 
-                for (int i = 1; i < Units.Count; i++) {
-                    if (Units[ i - 1 ].HasFollowPos) {
+                for ( int i = 1; i < Units.Count; i++ ) {
+                    if ( Units[ i - 1 ].HasFollowPos ) {
                         Units[ i ].Move( Units[ i - 1 ].GetFollowPos() );
                     }
                 }
             }
 
-            if ((!Units.Any() || Units.Last().HasFollowPos) && UnitAdditionQueue.Any()) {
+            if ( (!Units.Any() || Units.Last().HasFollowPos) && UnitAdditionQueue.Any() ) {
                 Units.Add( UnitAdditionQueue.Peek() );
                 UnitAdditionQueue.Dequeue();
             }
@@ -45,7 +45,7 @@ namespace LineOfBattle
 
         public void Draw()
         {
-            foreach (var u in Units) {
+            foreach ( var u in Units ) {
                 u.Draw();
             }
         }

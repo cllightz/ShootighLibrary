@@ -44,7 +44,7 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainLoop(object sender, EventArgs e)
+        private void MainLoop( object sender, EventArgs e )
         {
             // Game.MainLoop();
         }
@@ -54,9 +54,9 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void KeyDownEventHandler(object sender, KeyEventArgs e)
+        private void KeyDownEventHandler( object sender, KeyEventArgs e )
         {
-            switch (e.Key) {
+            switch ( e.Key ) {
                 case System.Windows.Input.Key.W:
                     Key.W = true;
                     break;
@@ -80,9 +80,9 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void KeyUpEventHandler(object sender, KeyEventArgs e)
+        private void KeyUpEventHandler( object sender, KeyEventArgs e )
         {
-            switch (e.Key) {
+            switch ( e.Key ) {
                 case System.Windows.Input.Key.W:
                     Key.W = false;
                     break;
@@ -106,9 +106,9 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MouseDownEventHandler(object sender, MouseButtonEventArgs e)
+        private void MouseDownEventHandler( object sender, MouseButtonEventArgs e )
         {
-            switch (e.ChangedButton) {
+            switch ( e.ChangedButton ) {
                 case MouseButton.Left:
                     Mouse.Left = true;
                     break;
@@ -124,9 +124,9 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MouseUpEventHandler(object sender, MouseButtonEventArgs e)
+        private void MouseUpEventHandler( object sender, MouseButtonEventArgs e )
         {
-            switch (e.ChangedButton) {
+            switch ( e.ChangedButton ) {
                 case MouseButton.Left:
                     Mouse.Left = false;
                     break;
@@ -142,7 +142,7 @@ namespace LineOfBattle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MouseMoveEventHandler(object sender, MouseEventArgs e)
+        private void MouseMoveEventHandler( object sender, MouseEventArgs e )
         {
             var pos = e.GetPosition( gameControl );
             Mouse.X = (float)pos.X;

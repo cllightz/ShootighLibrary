@@ -18,7 +18,7 @@ namespace LineOfBattle
         public float Size;
         public RawColor4 Color;
 
-        public Unit(RawVector2 pos, float size, RawColor4 color)
+        public Unit( RawVector2 pos, float size, RawColor4 color )
         {
             Position = pos;
             History = new List<RawVector2>();
@@ -26,13 +26,13 @@ namespace LineOfBattle
             Color = color;
         }
 
-        public void Move(RawVector2 newpos)
+        public void Move( RawVector2 newpos )
         {
             History.Add( new RawVector2() { X = Position.X, Y = Position.Y } );
             Position = newpos;
         }
 
-        public void MoveV(RawVector2 v)
+        public void MoveV( RawVector2 v )
         {
             History.Add( new RawVector2() { X = Position.X, Y = Position.Y } );
             Position.X += v.X;

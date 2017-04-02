@@ -17,7 +17,7 @@ namespace LineOfBattle
         public float Size;
         public RawColor4 Color;
 
-        public Shell(RawVector2 pos, RawVector2 v, float size, RawColor4 color)
+        public Shell( RawVector2 pos, RawVector2 v, float size, RawColor4 color )
         {
             Position = pos;
             V = v;
