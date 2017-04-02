@@ -23,6 +23,7 @@ namespace LineOfBattle
     /// </summary>
     class Game : D2dControl.D2dControl
     {
+        #region Fields
         public RenderTarget Target;
 
         public Random Rand = new Random();
@@ -33,8 +34,7 @@ namespace LineOfBattle
         public List<Shell> AlliesShells;
         public List<Shell> EnemiesShells;
         public ulong FrameCount;
-
-        private static System.Diagnostics.Stopwatch Watch;
+        #endregion
 
         public Game()
         {
@@ -59,9 +59,6 @@ namespace LineOfBattle
             AlliesShells = new List<Shell>();
             EnemiesShells = new List<Shell>();
             FrameCount = 0;
-
-            Watch = new System.Diagnostics.Stopwatch();
-            Watch.Start();
         }
 
         /// <summary>
@@ -196,8 +193,8 @@ namespace LineOfBattle
         /// </summary>
         private void DrawTitle()
         {
-            DrawText( "Line of Battle", 50, 0, 200 );
-            DrawText( "Press Left Mouse Button to Start", 25, 0, 300 );
+            DrawText( "Line of Battle", 50, 0, 100 );
+            DrawText( "Press Left Mouse Button to Start", 25, 0, 200 );
 
             if ( Mouse.Left ) {
                 State = ScheneState.BATTLE;
@@ -213,7 +210,7 @@ namespace LineOfBattle
         /// <param name="y"></param>
         private void DrawText( string text, float size, float x, float y )
         {
-            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", 12 ) )
+            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", size ) { TextAlignment = SharpDX.DirectWrite.TextAlignment.Center } )
             using ( var brush = new SolidColorBrush( Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
                 var rect = new RawRectangleF( x, y, x + Target.Size.Width, y + size );
                 Target.DrawText( text, format, rect, brush );
