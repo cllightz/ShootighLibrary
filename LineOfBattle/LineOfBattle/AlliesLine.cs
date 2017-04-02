@@ -16,36 +16,36 @@ namespace LineOfBattle
 
         public AlliesLine()
         {
-            Units = new List<Unit>();
-            UnitAdditionQueue = new Queue<Unit>();
+            this.Units = new List<Unit>();
+            this.UnitAdditionQueue = new Queue<Unit>();
         }
 
         public void Add( Unit u )
         {
-            UnitAdditionQueue.Enqueue( u );
+            this.UnitAdditionQueue.Enqueue( u );
         }
 
         public void Move()
         {
-            if ( Units.Any() && Key.AnyDirection ) {
-                Units[ 0 ].MoveV( new RawVector2() { X = 2 * Key.Direction.X, Y = 2 * Key.Direction.Y } );
+            if ( this.Units.Any() && Key.AnyDirection ) {
+                this.Units[ 0 ].MoveV( new RawVector2() { X = 2 * Key.Direction.X, Y = 2 * Key.Direction.Y } );
 
-                for ( int i = 1; i < Units.Count; i++ ) {
-                    if ( Units[ i - 1 ].HasFollowPos ) {
-                        Units[ i ].Move( Units[ i - 1 ].GetFollowPos() );
+                for ( var i = 1; i < this.Units.Count; i++ ) {
+                    if ( this.Units[ i - 1 ].HasFollowPos ) {
+                        this.Units[ i ].Move( this.Units[ i - 1 ].GetFollowPos() );
                     }
                 }
             }
 
-            if ( (!Units.Any() || Units.Last().HasFollowPos) && UnitAdditionQueue.Any() ) {
-                Units.Add( UnitAdditionQueue.Peek() );
-                UnitAdditionQueue.Dequeue();
+            if ( (!this.Units.Any() || this.Units.Last().HasFollowPos) && this.UnitAdditionQueue.Any() ) {
+                this.Units.Add( this.UnitAdditionQueue.Peek() );
+                this.UnitAdditionQueue.Dequeue();
             }
         }
 
         public void Draw()
         {
-            foreach ( var u in Units ) {
+            foreach ( var u in this.Units ) {
                 u.Draw();
             }
         }

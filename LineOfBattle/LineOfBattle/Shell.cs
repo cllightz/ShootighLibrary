@@ -19,21 +19,21 @@ namespace LineOfBattle
 
         public Shell( RawVector2 pos, RawVector2 v, float size, RawColor4 color )
         {
-            Position = pos;
-            V = v;
-            Size = size;
-            Color = color;
+            this.Position = pos;
+            this.V = v;
+            this.Size = size;
+            this.Color = color;
         }
 
         public void Move()
         {
-            Position.X += V.X;
-            Position.Y += V.Y;
+            this.Position.X += V.X;
+            this.Position.Y += V.Y;
         }
 
         public void Draw()
         {
-            Globals.Game.Target.DrawEllipse( new Ellipse( Position, Size, Size ), new SolidColorBrush( Globals.Game.Target, Color ) );
+            Globals.Game.Target.DrawEllipse( new Ellipse( this.Position, this.Size, this.Size ), new SolidColorBrush( Globals.Game.Target, this.Color ) );
         }
     }
 }

@@ -22,31 +22,19 @@ namespace LineOfBattle
     /// </summary>
     public partial class MainWindow : Window
     {
-        // private DispatcherTimer Timer;
-
         /// <summary>
         /// 初期化処理
         /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            KeyDown += KeyDownEventHandler;
-            KeyUp += KeyUpEventHandler;
+            this.KeyDown += this.KeyDownEventHandler;
+            this.KeyUp += this.KeyUpEventHandler;
 
-            MouseDown += MouseDownEventHandler;
-            MouseUp += MouseUpEventHandler;
-            MouseMove += MouseMoveEventHandler;
-        }
-
-        /// <summary>
-        /// DispatcherTimer によって呼び出されるイベントハンドラ
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainLoop( object sender, EventArgs e )
-        {
-            // Game.MainLoop();
+            this.MouseDown += this.MouseDownEventHandler;
+            this.MouseUp += this.MouseUpEventHandler;
+            this.MouseMove += this.MouseMoveEventHandler;
         }
 
         /// <summary>
@@ -144,7 +132,7 @@ namespace LineOfBattle
         /// <param name="e"></param>
         private void MouseMoveEventHandler( object sender, MouseEventArgs e )
         {
-            var pos = e.GetPosition( gameControl );
+            var pos = e.GetPosition( this.gameControl );
             Mouse.X = (float)pos.X;
             Mouse.Y = (float)pos.Y;
         }
