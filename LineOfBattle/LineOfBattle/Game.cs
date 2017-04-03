@@ -105,8 +105,6 @@ namespace LineOfBattle
                 case ScheneState.RESULT:
                     break;
             }
-
-            DrawText( this.Fps.ToString(), 12, 10, 01 );
         }
 
         #region 移動・判定・描画
