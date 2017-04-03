@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using SharpDX.Mathematics.Interop;
-
-namespace LineOfBattle
+﻿namespace LineOfBattle
 {
     class Globals
     {
