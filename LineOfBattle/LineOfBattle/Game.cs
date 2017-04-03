@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using SharpDX.DirectWrite;
@@ -47,10 +48,7 @@ namespace LineOfBattle
         /// </summary>
         public void Initialize()
         {
-            var center = new RawVector2() {
-                X = (float)this.ActualWidth / 2,
-                Y = (float)this.ActualHeight / 2
-            };
+            var center = new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 );
 
             this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
             this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
@@ -155,20 +153,14 @@ namespace LineOfBattle
         {
             if ( Mouse.Any && this.FrameCount % 10 == 0 ) {
                 foreach ( var u in this.Allies.Units ) {
-                    var cursor = new RawVector2() { X = Mouse.X, Y = Mouse.Y };
-                    var posL = new RawVector2() { X = u.Position.X, Y = u.Position.Y };
-                    var posR = new RawVector2() { X = this.Allies.Units.First().Position.X, Y = this.Allies.Units.First().Position.Y };
-                    var posLR = new RawVector2() { X = (posL.X + posR.X) / 2, Y = (posL.Y + posR.Y) / 2 };
-                    var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : new RawVector2() { X = 0, Y = 0 });
-
-                    var direction = new RawVector2() { X = cursor.X - pos.X, Y = cursor.Y - pos.Y };
-                    var norm = (float)Math.Sqrt( direction.X * direction.X + direction.Y * direction.Y );
-                    direction.X = (norm == 0) ? 0 : direction.X / norm;
-                    direction.Y = (norm == 0) ? 0 : direction.Y / norm;
-
-                    var v = new RawVector2() { X = 5 * direction.X, Y = 5 * direction.Y };
-
-                    this.AlliesShells.Add( new Shell( u.Position, v, 5, new RawColor4( 0, 1, 1, 1 ) ) );
+                    var cursor = Mouse.Position;
+                    var posL = u.Position;
+                    var posR = this.Allies.Units.First().Position;
+                    var posLR = (posL + posR) / 2;
+                    var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : throw new InvalidOperationException());
+                    var direction = (cursor - pos).GetNormalizedVector2();
+                    var velocity = 5 * direction;
+                    this.AlliesShells.Add( new Shell( u.Position, velocity, 5, new RawColor4( 0, 1, 1, 1 ) ) );
                 }
             }
         }
@@ -206,8 +198,8 @@ namespace LineOfBattle
         /// </summary>
         private void DrawTitle()
         {
-            DrawText( "Line of Battle", 50, 0, 100 );
-            DrawText( "Press Left Mouse Button to Start", 25, 0, 200 );
+            DrawText( "Line of Battle", 50, new Vector2( 0, 100 ) );
+            DrawText( "Press Left Mouse Button to Start", 25, new Vector2( 0, 200 ) );
 
             if ( Mouse.Left ) {
                 this.State = ScheneState.BATTLE;
@@ -221,11 +213,11 @@ namespace LineOfBattle
         /// <param name="size"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        private void DrawText( string text, float size, float x, float y, TextAlignment alignment = SharpDX.DirectWrite.TextAlignment.Center )
+        private void DrawText( string text, float size, Vector2 position, TextAlignment alignment = SharpDX.DirectWrite.TextAlignment.Center )
         {
             using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", size ) { TextAlignment = alignment } )
             using ( var brush = new SolidColorBrush( this.Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
-                var rect = new RawRectangleF( x, y, x + this.Target.Size.Width, y + size );
+                var rect = new RawRectangleF( position.X, position.Y, position.X + this.Target.Size.Width, position.Y + size );
                 this.Target.DrawText( text, format, rect, brush );
             }
         }

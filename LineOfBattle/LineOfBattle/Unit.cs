@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
@@ -8,35 +9,34 @@ namespace LineOfBattle
     class Unit
     {
         private const int HistoryLength = 20;
-        private List<RawVector2> History;
-        public RawVector2 Position;
+        private List<Vector2> History;
+        public Vector2 Position;
         public float Size;
         public RawColor4 Color;
 
-        public Unit( RawVector2 pos, float size, RawColor4 color )
+        public Unit( Vector2 position, float size, RawColor4 color )
         {
-            this.Position = pos;
-            this.History = new List<RawVector2>();
+            this.Position = position;
+            this.History = new List<Vector2>();
             this.Size = size;
             this.Color = color;
         }
 
         public bool HasFollowPos => this.History.Count >= HistoryLength;
 
-        public void Move( RawVector2 newpos )
+        public void Move( Vector2 newposition )
         {
-            this.History.Add( new RawVector2() { X = this.Position.X, Y = this.Position.Y } );
-            this.Position = newpos;
+            this.History.Add( this.Position );
+            this.Position = newposition;
         }
 
-        public void MoveV( RawVector2 v )
+        public void MoveV( Vector2 v )
         {
-            this.History.Add( new RawVector2() { X = this.Position.X, Y = this.Position.Y } );
-            this.Position.X += v.X;
-            this.Position.Y += v.Y;
+            this.History.Add( this.Position );
+            this.Position += v;
         }
 
-        public RawVector2 GetFollowPos()
+        public Vector2 GetFollowPos()
         {
             var res = this.History.First();
             this.History.RemoveAt( 0 );
@@ -45,7 +45,9 @@ namespace LineOfBattle
 
         public void Draw()
         {
-            Globals.Game.Target.DrawEllipse( new Ellipse( this.Position, this.Size, this.Size ), new SolidColorBrush( Globals.Game.Target, this.Color ) );
+            var ellipse = new Ellipse( this.Position.ToRawVector2(), this.Size, this.Size );
+            var brush = new SolidColorBrush( Globals.Game.Target, this.Color );
+            Globals.Game.Target.DrawEllipse( ellipse, brush );
         }
     }
 }

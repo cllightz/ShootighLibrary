@@ -120,6 +120,7 @@
     <Compile Include="ScheneState.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="Unit.cs" />
+    <Compile Include="VectorExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

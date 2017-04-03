@@ -1,32 +1,31 @@
-﻿using SharpDX.Direct2D1;
+﻿using System.Numerics;
+using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
 namespace LineOfBattle
 {
     class Shell
     {
-        public RawVector2 Position;
-        public RawVector2 V;
+        public Vector2 Position;
+        public Vector2 V;
         public float Size;
         public RawColor4 Color;
 
-        public Shell( RawVector2 pos, RawVector2 v, float size, RawColor4 color )
+        public Shell( Vector2 position, Vector2 v, float size, RawColor4 color )
         {
-            this.Position = pos;
+            this.Position = position;
             this.V = v;
             this.Size = size;
             this.Color = color;
         }
 
-        public void Move()
-        {
-            this.Position.X += this.V.X;
-            this.Position.Y += this.V.Y;
-        }
+        public void Move() => this.Position += this.V;
 
         public void Draw()
         {
-            Globals.Game.Target.DrawEllipse( new Ellipse( this.Position, this.Size, this.Size ), new SolidColorBrush( Globals.Game.Target, this.Color ) );
+            var ellipse = new Ellipse( this.Position.ToRawVector2(), this.Size, this.Size );
+            var brush = new SolidColorBrush( Globals.Game.Target, this.Color );
+            Globals.Game.Target.DrawEllipse( ellipse, brush );
         }
     }
 }

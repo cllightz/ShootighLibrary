@@ -1,4 +1,4 @@
-﻿using SharpDX.Mathematics.Interop;
+﻿using System.Numerics;
 
 namespace LineOfBattle
 {
@@ -10,6 +10,6 @@ namespace LineOfBattle
         public static float Y;
 
         public static bool Any => Left || Right;
-        public static RawVector2 Position => new RawVector2() { X = X, Y = Y };
+        public static Vector2 Position => new Vector2( X, Y );
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SharpDX.Mathematics.Interop;
+using System.Numerics;
 
 namespace LineOfBattle
 {
@@ -20,7 +20,7 @@ namespace LineOfBattle
         public void Move()
         {
             if ( this.Units.Any() && Key.AnyDirection ) {
-                this.Units[ 0 ].MoveV( new RawVector2() { X = 2 * Key.Direction.X, Y = 2 * Key.Direction.Y } );
+                this.Units[ 0 ].MoveV( 2 * Key.Direction );
 
                 for ( var i = 1; i < this.Units.Count; i++ ) {
                     if ( this.Units[ i - 1 ].HasFollowPos ) {
