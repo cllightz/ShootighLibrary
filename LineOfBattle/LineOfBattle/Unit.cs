@@ -12,9 +12,9 @@ namespace LineOfBattle
 {
     class Unit
     {
-        public RawVector2 Position;
-        private List<RawVector2> History;
         private const int HistoryLength = 20;
+        private List<RawVector2> History;
+        public RawVector2 Position;
         public float Size;
         public RawColor4 Color;
 
@@ -25,6 +25,8 @@ namespace LineOfBattle
             this.Size = size;
             this.Color = color;
         }
+
+        public bool HasFollowPos => this.History.Count >= HistoryLength;
 
         public void Move( RawVector2 newpos )
         {
@@ -38,8 +40,6 @@ namespace LineOfBattle
             this.Position.X += v.X;
             this.Position.Y += v.Y;
         }
-
-        public bool HasFollowPos { get { return this.History.Count >= HistoryLength; } }
 
         public RawVector2 GetFollowPos()
         {

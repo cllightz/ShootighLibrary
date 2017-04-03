@@ -16,7 +16,7 @@ namespace LineOfBattle
         public static bool S;
         public static bool D;
 
-        public static bool AnyDirection { get { return W || A || S || D; } }
+        public static bool AnyDirection => W || A || S || D;
 
         public static RawVector2 Direction
         {

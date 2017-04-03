@@ -20,10 +20,7 @@ namespace LineOfBattle
             this.UnitAdditionQueue = new Queue<Unit>();
         }
 
-        public void Add( Unit u )
-        {
-            this.UnitAdditionQueue.Enqueue( u );
-        }
+        public void Add( Unit u ) => this.UnitAdditionQueue.Enqueue( u );
 
         public void Move()
         {

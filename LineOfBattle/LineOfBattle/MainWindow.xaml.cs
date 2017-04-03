@@ -37,6 +37,7 @@ namespace LineOfBattle
             this.MouseMove += this.MouseMoveEventHandler;
         }
 
+        #region Event Handlers
         /// <summary>
         /// キーを押した時のイベントを処理
         /// </summary>
@@ -136,5 +137,6 @@ namespace LineOfBattle
             Mouse.X = (float)pos.X;
             Mouse.Y = (float)pos.Y;
         }
+        #endregion
     }
 }

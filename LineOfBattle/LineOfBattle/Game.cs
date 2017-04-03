@@ -1,17 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using SharpDX.DirectWrite;
@@ -98,7 +87,7 @@ namespace LineOfBattle
 
                 case ScheneState.BATTLE:
                     MoveEnemies();
-                    this.Allies.Move();
+                    MoveAllies();
                     MoveAlliesShells();
                     MoveEnemiesShells();
                     Shoot();
@@ -106,7 +95,7 @@ namespace LineOfBattle
                     CalculateEnemiesShellsCollision();
 
                     DrawEnemies();
-                    this.Allies.Draw();
+                    DrawAllies();
                     DrawAlliesShells();
                     DrawEnemiesShells();
 
@@ -120,6 +109,7 @@ namespace LineOfBattle
             DrawText( this.Fps.ToString(), 12, 10, 01 );
         }
 
+        #region 移動・判定・描画
         private void MoveEnemies()
         {
             foreach ( var u in this.Enemies ) {
@@ -127,27 +117,7 @@ namespace LineOfBattle
             }
         }
 
-        private void Shoot()
-        {
-            if ( Mouse.Any && this.FrameCount % 10 == 0 ) {
-                foreach ( var u in this.Allies.Units ) {
-                    var cursor = new RawVector2() { X = Mouse.X, Y = Mouse.Y };
-                    var posL = new RawVector2() { X = u.Position.X, Y = u.Position.Y };
-                    var posR = new RawVector2() { X = this.Allies.Units.First().Position.X, Y = this.Allies.Units.First().Position.Y };
-                    var posLR = new RawVector2() { X = (posL.X + posR.X) / 2, Y = (posL.Y + posR.Y) / 2 };
-                    var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : new RawVector2() { X = 0, Y = 0 });
-
-                    var direction = new RawVector2() { X = cursor.X - pos.X, Y = cursor.Y - pos.Y };
-                    var norm = (float)Math.Sqrt( direction.X * direction.X + direction.Y * direction.Y );
-                    direction.X = (norm == 0) ? 0 : direction.X / norm;
-                    direction.Y = (norm == 0) ? 0 : direction.Y / norm;
-
-                    var v = new RawVector2() { X = 5 * direction.X, Y = 5 * direction.Y };
-
-                    this.AlliesShells.Add( new Shell( u.Position, v, 5, new RawColor4( 0, 1, 1, 1 ) ) );
-                }
-            }
-        }
+        private void MoveAllies() => this.Allies.Move();
 
         private void MoveAlliesShells()
         {
@@ -183,6 +153,28 @@ namespace LineOfBattle
             }
         }
 
+        private void Shoot()
+        {
+            if ( Mouse.Any && this.FrameCount % 10 == 0 ) {
+                foreach ( var u in this.Allies.Units ) {
+                    var cursor = new RawVector2() { X = Mouse.X, Y = Mouse.Y };
+                    var posL = new RawVector2() { X = u.Position.X, Y = u.Position.Y };
+                    var posR = new RawVector2() { X = this.Allies.Units.First().Position.X, Y = this.Allies.Units.First().Position.Y };
+                    var posLR = new RawVector2() { X = (posL.X + posR.X) / 2, Y = (posL.Y + posR.Y) / 2 };
+                    var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : new RawVector2() { X = 0, Y = 0 });
+
+                    var direction = new RawVector2() { X = cursor.X - pos.X, Y = cursor.Y - pos.Y };
+                    var norm = (float)Math.Sqrt( direction.X * direction.X + direction.Y * direction.Y );
+                    direction.X = (norm == 0) ? 0 : direction.X / norm;
+                    direction.Y = (norm == 0) ? 0 : direction.Y / norm;
+
+                    var v = new RawVector2() { X = 5 * direction.X, Y = 5 * direction.Y };
+
+                    this.AlliesShells.Add( new Shell( u.Position, v, 5, new RawColor4( 0, 1, 1, 1 ) ) );
+                }
+            }
+        }
+
         private void CalculateAlliesShellsCollision() { }
 
         private void CalculateEnemiesShellsCollision() { }
@@ -193,6 +185,8 @@ namespace LineOfBattle
                 u.Draw();
             }
         }
+
+        private void DrawAllies() => this.Allies.Draw();
 
         private void DrawAlliesShells()
         {
@@ -207,6 +201,7 @@ namespace LineOfBattle
                 s.Draw();
             }
         }
+        #endregion
 
         /// <summary>
         /// タイトル画面の描画
@@ -228,9 +223,9 @@ namespace LineOfBattle
         /// <param name="size"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        private void DrawText( string text, float size, float x, float y )
+        private void DrawText( string text, float size, float x, float y, TextAlignment alignment = SharpDX.DirectWrite.TextAlignment.Center )
         {
-            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", size ) { TextAlignment = SharpDX.DirectWrite.TextAlignment.Center } )
+            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", size ) { TextAlignment = alignment } )
             using ( var brush = new SolidColorBrush( this.Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
                 var rect = new RawRectangleF( x, y, x + this.Target.Size.Width, y + size );
                 this.Target.DrawText( text, format, rect, brush );

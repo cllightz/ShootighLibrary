@@ -27,8 +27,8 @@ namespace LineOfBattle
 
         public void Move()
         {
-            this.Position.X += V.X;
-            this.Position.Y += V.Y;
+            this.Position.X += this.V.X;
+            this.Position.Y += this.V.Y;
         }
 
         public void Draw()

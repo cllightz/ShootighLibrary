@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDX.Mathematics.Interop;
 
 namespace LineOfBattle
 {
@@ -13,6 +14,7 @@ namespace LineOfBattle
         public static float X;
         public static float Y;
 
-        public static bool Any { get { return Left || Right; } }
+        public static bool Any => Left || Right;
+        public static RawVector2 Position => new RawVector2() { X = X, Y = Y };
     }
 }
