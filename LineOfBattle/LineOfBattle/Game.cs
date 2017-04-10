@@ -50,16 +50,16 @@ namespace LineOfBattle
         {
             var center = new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 );
 
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
 
             this.IsGameInitialized = true;
         }
@@ -151,17 +151,8 @@ namespace LineOfBattle
 
         private void Shoot()
         {
-            if ( Mouse.Any && this.FrameCount % 10 == 0 ) {
-                foreach ( var u in this.Allies.Units ) {
-                    var cursor = Mouse.Position;
-                    var posL = u.Position;
-                    var posR = this.Allies.Units.First().Position;
-                    var posLR = (posL + posR) / 2;
-                    var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : throw new InvalidOperationException());
-                    var direction = (cursor - pos).GetNormalizedVector2();
-                    var velocity = 5 * direction;
-                    this.AlliesShells.Add( new Shell( u.Position, velocity, 5, new RawColor4( 0, 1, 1, 1 ) ) );
-                }
+            foreach ( var u in this.Allies.Units ) {
+                u.Shoot( Faction.ALLY );
             }
         }
 
