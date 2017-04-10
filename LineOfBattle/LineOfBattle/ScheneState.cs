@@ -2,8 +2,8 @@
 {
     enum ScheneState
     {
-        TITLE,
-        BATTLE,
-        RESULT,
+        Title,
+        Battle,
+        Result,
     }
 }

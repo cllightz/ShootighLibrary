@@ -19,11 +19,17 @@ namespace LineOfBattle
         public void Move()
         {
             if ( this.Units.Any() && Key.AnyDirection ) {
-                this.Units[ 0 ].MoveV( 2 * Key.Direction );
+                if ( Key.Shift ) {
+                    foreach ( var u in this.Units ) {
+                        u.MoveV( 2 * Key.Direction, Maneuver.Simultaneously );
+                    }
+                } else {
+                    this.Units[ 0 ].MoveV( 2 * Key.Direction, Maneuver.Successively );
 
-                for ( var i = 1; i < this.Units.Count; i++ ) {
-                    if ( this.Units[ i - 1 ].HasFollowPos ) {
-                        this.Units[ i ].Move( this.Units[ i - 1 ].GetFollowPos() );
+                    for ( var i = 1; i < this.Units.Count; i++ ) {
+                        if ( this.Units[ i - 1 ].HasFollowPos ) {
+                            this.Units[ i ].Move( this.Units[ i - 1 ].GetFollowPos() );
+                        }
                     }
                 }
             }

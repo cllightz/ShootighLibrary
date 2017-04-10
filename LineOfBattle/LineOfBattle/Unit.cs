@@ -35,17 +35,30 @@ namespace LineOfBattle
             this.Position = newposition;
         }
 
-        public void MoveV( Vector2 v )
+        public void MoveV( Vector2 v, Maneuver maneuver )
         {
-            this.History.Add( this.Position );
-            this.Position += v;
+            switch ( maneuver ) {
+                case Maneuver.Successively:
+                    this.History.Add( this.Position );
+                    this.Position += v;
+                    break;
+
+                case Maneuver.Simultaneously:
+                    this.Position += v;
+
+                    for ( var i = 0; i < this.History.Count; i++ ) {
+                        this.History[i] += v;
+                    }
+
+                    break;
+            }
         }
 
         public void Shoot( Faction faction )
         {
             if ( Mouse.Any && this.CoolDownTimer <= 0 ) {
                 switch ( faction ) {
-                    case Faction.ALLY:
+                    case Faction.Ally:
                         var cursor = Mouse.Position;
                         var posL = this.Position;
                         var posR = Globals.Game.Allies.Units.First().Position;
@@ -56,10 +69,10 @@ namespace LineOfBattle
                         Globals.Game.AlliesShells.Add( new Shell( this.Position, velocity, 5, new RawColor4( 0, 1, 1, 1 ) ) );
                         break;
 
-                    case Faction.NEUTRAL:
+                    case Faction.Neutral:
                         break;
 
-                    case Faction.ENEMY:
+                    case Faction.Enemy:
                         break;
                 }
 

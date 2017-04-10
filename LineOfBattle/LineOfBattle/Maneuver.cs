@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LineOfBattle
 {
-    enum Faction
+    enum Maneuver
     {
-        Ally,
-        Neutral,
-        Enemy,
+        Successively,
+        Simultaneously,
     }
 }

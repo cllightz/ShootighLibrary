@@ -31,7 +31,7 @@ namespace LineOfBattle
         {
             Globals.Game = this;
 
-            this.State = ScheneState.TITLE;
+            this.State = ScheneState.Title;
 
             this.Allies = new AlliesLine();
 
@@ -79,11 +79,11 @@ namespace LineOfBattle
             target.Clear( new RawColor4( 0, 0, 0, 1 ) );
 
             switch ( this.State ) {
-                case ScheneState.TITLE:
+                case ScheneState.Title:
                     DrawTitle();
                     break;
 
-                case ScheneState.BATTLE:
+                case ScheneState.Battle:
                     MoveEnemies();
                     MoveAllies();
                     MoveAlliesShells();
@@ -100,7 +100,7 @@ namespace LineOfBattle
                     this.FrameCount++;
                     break;
 
-                case ScheneState.RESULT:
+                case ScheneState.Result:
                     break;
             }
         }
@@ -152,7 +152,7 @@ namespace LineOfBattle
         private void Shoot()
         {
             foreach ( var u in this.Allies.Units ) {
-                u.Shoot( Faction.ALLY );
+                u.Shoot( Faction.Ally );
             }
         }
 
@@ -193,7 +193,7 @@ namespace LineOfBattle
             DrawText( "Press Left Mouse Button to Start", 25, new Vector2( 0, 200 ) );
 
             if ( Mouse.Left ) {
-                this.State = ScheneState.BATTLE;
+                this.State = ScheneState.Battle;
             }
         }
 

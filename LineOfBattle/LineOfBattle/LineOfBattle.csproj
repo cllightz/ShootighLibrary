@@ -117,6 +117,7 @@
     <Compile Include="Faction.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Key.cs" />
+    <Compile Include="Maneuver.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="ScheneState.cs" />
     <Compile Include="Shell.cs" />
