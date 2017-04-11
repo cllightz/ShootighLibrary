@@ -27,18 +27,13 @@ namespace LineOfBattle
         private bool IsGameInitialized;
         #endregion
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Game()
         {
             Globals.Game = this;
-
             this.State = ScheneState.Title;
-
-            this.Allies = new AlliesLine();
-
-            this.Enemies = new List<Unit>();
-            this.AlliesShells = new List<Shell>();
-            this.EnemiesShells = new List<Shell>();
-            this.FrameCount = 0;
             this.IsGameInitialized = false;
         }
 
@@ -48,18 +43,23 @@ namespace LineOfBattle
         /// </summary>
         public void Initialize()
         {
+            this.Enemies = new List<Unit>();
+            this.AlliesShells = new List<Shell>();
+            this.EnemiesShells = new List<Shell>();
+            this.FrameCount = 0;
+
             var center = new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 );
 
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
-            this.Allies.Add( new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ) );
+            this.Allies = new AlliesLine() {
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+            };
 
             this.IsGameInitialized = true;
         }

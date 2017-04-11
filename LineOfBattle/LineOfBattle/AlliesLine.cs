@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LineOfBattle
 {
-    class AlliesLine
+    class AlliesLine : IEnumerable<Unit>
     {
         public List<Unit> Units { get; private set; }
         private Queue<Unit> UnitAdditionQueue;
@@ -46,5 +48,8 @@ namespace LineOfBattle
                 u.Draw();
             }
         }
+
+        public IEnumerator<Unit> GetEnumerator() => this.Units.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.Units.GetEnumerator();
     }
 }
