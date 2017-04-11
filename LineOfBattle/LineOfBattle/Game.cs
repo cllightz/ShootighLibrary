@@ -37,6 +37,14 @@ namespace LineOfBattle
             this.IsGameInitialized = false;
         }
 
+        #region Properties
+        public float Padding => 10;
+        public float Left => this.Padding;
+        public float Right => (float)this.ActualWidth - this.Padding;
+        public float Top => this.Padding;
+        public float Bottom => (float)this.ActualHeight - this.Padding;
+        #endregion
+
         /// <summary>
         /// 1回目のゲームループで呼ばれる初期化処理．
         /// RenderTargetの情報を必要とするものを記述する．
