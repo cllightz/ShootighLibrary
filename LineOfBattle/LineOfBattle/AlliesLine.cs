@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -22,7 +21,7 @@ namespace LineOfBattle
 
         public void Move()
         {
-            if ( this.Units.Any() && Key.AnyDirection && this.CanMove() ) {
+            if ( this.Units.Any() && Key.AnyDirection && this.CanMove ) {
                 if ( Key.Shift ) {
                     foreach ( var u in this.Units ) {
                         u.MoveV( Speed * Key.Direction, Maneuver.Simultaneously );
@@ -44,43 +43,36 @@ namespace LineOfBattle
             }
         }
 
-        public bool CanMove()
+        public bool CanMove
         {
-            var newposition = this.Units[ 0 ].Position + Speed * Key.Direction;
-            var x = newposition.X;
-            var y = newposition.Y;
+            get {
+                (var x, var y) = (this.Units[ 0 ].DrawOptions.Position + Speed * Key.Direction).Tuple();
 
-            if ( Globals.Game.Left <= x && x <= Globals.Game.Right && Globals.Game.Top <= y && y <= Globals.Game.Bottom ) {
-                return true;
-            }
+                if ( Globals.Game.Left <= x && x <= Globals.Game.Right && Globals.Game.Top <= y && y <= Globals.Game.Bottom ) {
+                    return true;
+                }
 
-            if ( !( Globals.Game.Left <= x && x <= Globals.Game.Right || Globals.Game.Top <= y && y <= Globals.Game.Bottom) ) {
+                if ( !(Globals.Game.Left <= x && x <= Globals.Game.Right || Globals.Game.Top <= y && y <= Globals.Game.Bottom) ) {
+                    return false;
+                }
+
+                if ( Key.A && (Key.W || Key.S) && x < Globals.Game.Left ) {
+                    return true;
+                }
+
+                if ( Key.D && (Key.W || Key.S) && Globals.Game.Right < x ) {
+                    return true;
+                }
+
+                if ( Key.W && (Key.A || Key.D) && y < Globals.Game.Top ) {
+                    return true;
+                }
+
+                if ( Key.S && (Key.A || Key.D) && Globals.Game.Left < y ) {
+                    return true;
+                }
+
                 return false;
-            }
-
-            if ( Key.A && (Key.W || Key.S) && x < Globals.Game.Left ) {
-                return true;
-            }
-
-            if ( Key.D && (Key.W || Key.S) && Globals.Game.Right < x ) {
-                return true;
-            }
-
-            if ( Key.W && (Key.A || Key.D) && y < Globals.Game.Top ) {
-                return true;
-            }
-
-            if ( Key.S && (Key.A || Key.D) && Globals.Game.Left < y ) {
-                return true;
-            }
-
-            return false;
-        }
-
-        public void Draw()
-        {
-            foreach ( var u in this.Units ) {
-                u.Draw();
             }
         }
 
@@ -88,7 +80,7 @@ namespace LineOfBattle
         {
             float to1( float f ) => f < 0 ? -1 : f > 0 ? 1 : 0;
 
-            var newposition = u.Position + Speed * Key.Direction;
+            var newposition = u.DrawOptions.Position + Speed * Key.Direction;
             var x = newposition.X;
             var y = newposition.Y;
 
@@ -103,7 +95,16 @@ namespace LineOfBattle
             return Speed * Key.Direction;
         }
 
+        public void Draw()
+        {
+            foreach ( var u in this.Units ) {
+                u.Draw();
+            }
+        }
+
+        #region IEnumerableの実装
         public IEnumerator<Unit> GetEnumerator() => this.Units.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => this.Units.GetEnumerator();
+        #endregion
     }
 }

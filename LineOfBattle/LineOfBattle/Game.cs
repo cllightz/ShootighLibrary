@@ -56,17 +56,14 @@ namespace LineOfBattle
             this.EnemiesShells = new List<Shell>();
             this.FrameCount = 0;
 
-            var center = new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 );
+            var drawoptions = new DrawOptions( new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) );
 
             this.Allies = new AlliesLine() {
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
-                new Unit( center, 6, 10, new RawColor4( 0, 1, 0, 1 ) ),
+                new Unit( drawoptions.Clone, 10 ),
+                new Unit( drawoptions.Clone, 10 ),
+                new Unit( drawoptions.Clone, 10 ),
+                new Unit( drawoptions.Clone, 10 ),
+                new Unit( drawoptions.Clone, 10 ),
             };
 
             this.IsGameInitialized = true;
@@ -92,20 +89,7 @@ namespace LineOfBattle
                     break;
 
                 case ScheneState.Battle:
-                    MoveEnemies();
-                    MoveAllies();
-                    MoveAlliesShells();
-                    MoveEnemiesShells();
-                    Shoot();
-                    CalculateAlliesShellsCollision();
-                    CalculateEnemiesShellsCollision();
-
-                    DrawEnemies();
-                    DrawAllies();
-                    DrawAlliesShells();
-                    DrawEnemiesShells();
-
-                    this.FrameCount++;
+                    BattleLogic();
                     break;
 
                 case ScheneState.Result:
@@ -113,11 +97,29 @@ namespace LineOfBattle
             }
         }
 
+        private void BattleLogic()
+        {
+            MoveEnemies();
+            MoveAllies();
+            MoveAlliesShells();
+            MoveEnemiesShells();
+            Shoot();
+            CalculateAlliesShellsCollision();
+            CalculateEnemiesShellsCollision();
+
+            DrawEnemies();
+            DrawAllies();
+            DrawAlliesShells();
+            DrawEnemiesShells();
+
+            this.FrameCount++;
+        }
+
         #region 移動・判定・描画
         private void MoveEnemies()
         {
             foreach ( var u in this.Enemies ) {
-
+                u.Move();
             }
         }
 
@@ -131,8 +133,8 @@ namespace LineOfBattle
 
             if ( this.AlliesShells.Any() ) {
                 for ( var i = this.AlliesShells.Count - 1; 0 <= i; i-- ) {
-                    var x = this.AlliesShells[ i ].Position.X;
-                    var y = this.AlliesShells[ i ].Position.Y;
+                    var x = this.AlliesShells[ i ].DrawOptions.Position.X;
+                    var y = this.AlliesShells[ i ].DrawOptions.Position.Y;
 
                     if ( x < -100 || this.Target.Size.Width + 100 < x || y < -100 || this.Target.Size.Height + 100 < y ) {
                         this.AlliesShells.RemoveAt( i );
@@ -148,8 +150,8 @@ namespace LineOfBattle
             }
 
             for ( var i = this.EnemiesShells.Count - 1; 0 <= i; i++ ) {
-                var x = this.EnemiesShells[ i ].Position.X;
-                var y = this.EnemiesShells[ i ].Position.Y;
+                var x = this.EnemiesShells[ i ].DrawOptions.Position.X;
+                var y = this.EnemiesShells[ i ].DrawOptions.Position.Y;
 
                 if ( x < -100 || this.Target.Size.Width + 100 < x || y < -100 || this.Target.Size.Height + 100 < y ) {
                     this.EnemiesShells.RemoveAt( i );
@@ -160,7 +162,7 @@ namespace LineOfBattle
         private void Shoot()
         {
             foreach ( var u in this.Allies.Units ) {
-                u.Shoot( Faction.Ally );
+                u.Shoot();
             }
         }
 
@@ -197,27 +199,12 @@ namespace LineOfBattle
         /// </summary>
         private void DrawTitle()
         {
-            DrawText( "Line of Battle", 50, new Vector2( 0, 100 ) );
-            DrawText( "Press Left Mouse Button to Start", 25, new Vector2( 0, 200 ) );
-
+            var white = new RawColor4( 1, 1, 1, 1 );
+            new Label( new DrawOptions( new Vector2( 0, 100 ), 50, white ), "Line of Battle" ).Draw();
+            new Label( new DrawOptions( new Vector2( 0, 200 ), 25, white ), "Press Left Mouse Button to Start" ).Draw();
+            
             if ( Mouse.Left ) {
                 this.State = ScheneState.Battle;
-            }
-        }
-
-        /// <summary>
-        /// Canvas へのテキストの描画
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="size"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        private void DrawText( string text, float size, Vector2 position, TextAlignment alignment = SharpDX.DirectWrite.TextAlignment.Center )
-        {
-            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", size ) { TextAlignment = alignment } )
-            using ( var brush = new SolidColorBrush( this.Target, new RawColor4( 1, 1, 1, 1 ) ) ) {
-                var rect = new RawRectangleF( position.X, position.Y, position.X + this.Target.Size.Width, position.Y + size );
-                this.Target.DrawText( text, format, rect, brush );
             }
         }
     }

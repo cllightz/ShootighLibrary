@@ -95,6 +95,9 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -114,13 +117,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DrawOptions.cs" />
     <Compile Include="Faction.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="IDrawable.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="Maneuver.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="ScheneState.cs" />
     <Compile Include="Shell.cs" />
+    <Compile Include="Label.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="VectorExtensions.cs" />
     <Page Include="MainWindow.xaml">
