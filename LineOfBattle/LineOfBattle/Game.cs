@@ -99,6 +99,11 @@ namespace LineOfBattle
 
         private void BattleLogic()
         {
+            if ( this.FrameCount % 100 == 0 ) {
+                var theta = 2 * Math.PI * this.Rand.NextDouble();
+                this.Enemies.Add( new Unit( new DrawOptions( new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 ), 5, new RawColor4( 1, 0, 0, 1 ) ), 1, pos => pos + new Vector2( (float)Math.Cos( theta ), (float)Math.Sin( theta ) ) ) );
+            }
+
             MoveEnemies();
             MoveAllies();
             MoveAlliesShells();

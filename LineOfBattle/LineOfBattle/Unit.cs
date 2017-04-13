@@ -56,9 +56,7 @@ namespace LineOfBattle
         public bool HasFollowPos => this.History.Count >= HistoryLength;
 
         #region Move Methods
-        public void Move()
-        {
-        }
+        public void Move() => this.DrawOptions.Position = this.MotionRule( this.DrawOptions.Position );
 
         public void Move( Vector2 newposition )
         {
@@ -88,31 +86,47 @@ namespace LineOfBattle
 
         public void Shoot()
         {
-            if ( Mouse.Any && this.CoolDownTimer <= 0 ) {
-                switch ( this.Faction ) {
-                    case Faction.Ally:
+            switch ( this.Faction ) {
+                case Faction.Ally:
+                    if ( Mouse.Any && this.CoolDownTimer <= 0 ) {
                         var cursor = Mouse.Position;
                         var posL = this.DrawOptions.Position;
                         var posR = Globals.Game.Allies.Units.First().DrawOptions.Position;
                         var posLR = (posL + posR) / 2;
                         var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : throw new InvalidOperationException());
                         var direction = (cursor - pos).GetNormalizedVector2();
-                        var velocity = 5 * direction;
+                        var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
                         var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
                         Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
-                        break;
 
-                    case Faction.Neutral:
-                        break;
+                        this.CoolDownTimer += 1.0f / this.RoundsPerSecond;
+                    } else {
+                        this.CoolDownTimer -= 1.0f / 60.0f;
+                        this.CoolDownTimer = (this.CoolDownTimer < 0) ? 0 : this.CoolDownTimer;
+                    }
 
-                    case Faction.Enemy:
-                        break;
-                }
+                    break;
 
-                this.CoolDownTimer += 1.0f / this.RoundsPerSecond;
-            } else {
-                this.CoolDownTimer -= 1.0f / 60.0f;
-                this.CoolDownTimer = (this.CoolDownTimer < 0) ? 0 : this.CoolDownTimer;
+                case Faction.Enemy:
+                    if ( this.CoolDownTimer <= 0 ) {
+                        Vector2 radtovector2( double rad ) { return new Vector2( (float)Math.Cos( rad ), (float)Math.Sin( rad ) ); };
+
+                        var theta = 2 * Math.PI * Globals.Game.Rand.NextDouble();
+                        var direction = radtovector2( theta ).GetNormalizedVector2();
+                        var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
+                        var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
+                        Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
+
+                        this.CoolDownTimer += 1.0f / this.RoundsPerSecond;                           
+                    } else {
+                        this.CoolDownTimer -= 1.0f / 60.0f;
+                        this.CoolDownTimer = (this.CoolDownTimer < 0) ? 0 : this.CoolDownTimer;
+                    }
+
+                    break;
+
+                case Faction.Neutral:
+                    break;
             }
         }
 
