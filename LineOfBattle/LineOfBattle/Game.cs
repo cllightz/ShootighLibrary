@@ -108,7 +108,8 @@ namespace LineOfBattle
             MoveAllies();
             MoveAlliesShells();
             MoveEnemiesShells();
-            Shoot();
+            ShootAlliesShells();
+            ShootEnemiesShells();
             CalculateAlliesShellsCollision();
             CalculateEnemiesShellsCollision();
 
@@ -164,9 +165,16 @@ namespace LineOfBattle
             }
         }
 
-        private void Shoot()
+        private void ShootAlliesShells()
         {
             foreach ( var u in this.Allies.Units ) {
+                u.Shoot();
+            }
+        }
+
+        private void ShootEnemiesShells()
+        {
+            foreach ( var u in this.Enemies ) {
                 u.Shoot();
             }
         }

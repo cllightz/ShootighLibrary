@@ -114,7 +114,7 @@ namespace LineOfBattle
                         var theta = 2 * Math.PI * Globals.Game.Rand.NextDouble();
                         var direction = radtovector2( theta ).GetNormalizedVector2();
                         var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
-                        var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
+                        var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 1, 0.5f, 0, 1 ) );
                         Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
 
                         this.CoolDownTimer += 1.0f / this.RoundsPerSecond;                           
