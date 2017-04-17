@@ -48,27 +48,27 @@ namespace LineOfBattle
             get {
                 (var x, var y) = (this.Units[ 0 ].DrawOptions.Position + Speed * Key.Direction).Tuple();
 
-                if ( Globals.LoB.Left <= x && x <= Globals.LoB.Right && Globals.LoB.Top <= y && y <= Globals.LoB.Bottom ) {
+                if ( Globals.Game.Left <= x && x <= Globals.Game.Right && Globals.Game.Top <= y && y <= Globals.Game.Bottom ) {
                     return true;
                 }
 
-                if ( !(Globals.LoB.Left <= x && x <= Globals.LoB.Right || Globals.LoB.Top <= y && y <= Globals.LoB.Bottom) ) {
+                if ( !(Globals.Game.Left <= x && x <= Globals.Game.Right || Globals.Game.Top <= y && y <= Globals.Game.Bottom) ) {
                     return false;
                 }
 
-                if ( Key.A && (Key.W || Key.S) && x < Globals.LoB.Left ) {
+                if ( Key.A && (Key.W || Key.S) && x < Globals.Game.Left ) {
                     return true;
                 }
 
-                if ( Key.D && (Key.W || Key.S) && Globals.LoB.Right < x ) {
+                if ( Key.D && (Key.W || Key.S) && Globals.Game.Right < x ) {
                     return true;
                 }
 
-                if ( Key.W && (Key.A || Key.D) && y < Globals.LoB.Top ) {
+                if ( Key.W && (Key.A || Key.D) && y < Globals.Game.Top ) {
                     return true;
                 }
 
-                if ( Key.S && (Key.A || Key.D) && Globals.LoB.Left < y ) {
+                if ( Key.S && (Key.A || Key.D) && Globals.Game.Left < y ) {
                     return true;
                 }
 
@@ -84,11 +84,11 @@ namespace LineOfBattle
             var x = newposition.X;
             var y = newposition.Y;
 
-            if ( x < Globals.LoB.Left || Globals.LoB.Right < x ) {
+            if ( x < Globals.Game.Left || Globals.Game.Right < x ) {
                 return new Vector2( 0, Speed * to1( Key.Direction.Y ) );
             }
 
-            if ( y < Globals.LoB.Top || Globals.LoB.Bottom < y ) {
+            if ( y < Globals.Game.Top || Globals.Game.Bottom < y ) {
                 return new Vector2( Speed * to1( Key.Direction.X ), 0 );
             }
 

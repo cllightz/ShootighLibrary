@@ -123,6 +123,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Globals_T.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="Maneuver.cs" />
     <Compile Include="Mouse.cs" />

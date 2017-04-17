@@ -2,10 +2,7 @@
 
 namespace LineOfBattle
 {
-    class Globals
+    class Globals : Globals<LoB>
     {
-        public static GameControl Control;
-        public static RenderTarget Target;
-        public static LoB LoB;
     }
 }

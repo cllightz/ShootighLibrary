@@ -32,7 +32,7 @@ namespace LineOfBattle
         /// </summary>
         public override void Initialize()
         {
-            Globals.LoB = this;
+            Globals.Game = this;
 
             this.ScheneState = ScheneState.Title;
 
