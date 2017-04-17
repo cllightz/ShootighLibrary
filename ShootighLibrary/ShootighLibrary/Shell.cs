@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using SharpDX.Direct2D1;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     class Shell : IDrawable
     {

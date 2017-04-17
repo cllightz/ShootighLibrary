@@ -1,6 +1,6 @@
 ﻿using SharpDX.Direct2D1;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     abstract class Globals<T>
     {

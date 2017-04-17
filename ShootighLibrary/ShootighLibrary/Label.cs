@@ -2,7 +2,7 @@
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     class Label : IDrawable
     {

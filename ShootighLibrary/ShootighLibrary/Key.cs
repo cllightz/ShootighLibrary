@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Windows.Input;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     static class Key
     {

@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using SharpDX.Mathematics.Interop;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     /// <summary>
     /// IDrawableを実装するクラスに渡す描画設定をまとめたクラス。

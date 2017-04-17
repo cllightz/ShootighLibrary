@@ -1,4 +1,4 @@
-﻿namespace LineOfBattle
+﻿namespace ShootighLibrary
 {
     class Globals : Globals<LoB>
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using SharpDX.Mathematics.Interop;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     /// <summary>
     /// ゲームのロジック

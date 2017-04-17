@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック

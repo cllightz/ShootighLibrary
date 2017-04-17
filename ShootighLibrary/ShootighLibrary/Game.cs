@@ -1,4 +1,4 @@
-﻿namespace LineOfBattle
+﻿namespace ShootighLibrary
 {
     abstract class Game
     {

@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     static class Mouse
     {

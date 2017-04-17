@@ -3,7 +3,7 @@ using System.Windows.Input;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
-namespace LineOfBattle
+namespace ShootighLibrary
 {
     /// <summary>
     /// ゲームのコントロール
