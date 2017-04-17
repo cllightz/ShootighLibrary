@@ -27,11 +27,11 @@ namespace LineOfBattle
         /// <param name="color"></param>
         public Unit( DrawOptions drawoptions, float roundspersecond )
         {
-            this.DrawOptions = drawoptions;
-            this.History = new List<Vector2>();
-            this.RoundsPerSecond = roundspersecond;
-            this.CoolDownTimer = 0;
-            this.Faction = Faction.Ally;
+            DrawOptions = drawoptions;
+            History = new List<Vector2>();
+            RoundsPerSecond = roundspersecond;
+            CoolDownTimer = 0;
+            Faction = Faction.Ally;
         }
 
         /// <summary>
@@ -44,39 +44,41 @@ namespace LineOfBattle
         /// <param name="motionrule"></param>
         public Unit( DrawOptions drawoptions, float roundspersecond, Func<Vector2, Vector2> motionrule )
         {
-            this.DrawOptions = drawoptions;
-            this.History = new List<Vector2>();
-            this.RoundsPerSecond = roundspersecond;
-            this.CoolDownTimer = 0;
-            this.MotionRule = motionrule;
-            this.Faction = Faction.Enemy;
+            DrawOptions = drawoptions;
+            History = new List<Vector2>();
+            RoundsPerSecond = roundspersecond;
+            CoolDownTimer = 0;
+            MotionRule = motionrule;
+            Faction = Faction.Enemy;
         }
         #endregion
 
-        public bool HasFollowPos => this.History.Count >= HistoryLength;
+        public bool HasFollowPos
+            => History.Count >= HistoryLength;
 
         #region Move Methods
-        public void Move() => this.DrawOptions.Position = this.MotionRule( this.DrawOptions.Position );
+        public void Move()
+            => DrawOptions.Position = MotionRule( DrawOptions.Position );
 
         public void Move( Vector2 newposition )
         {
-            this.History.Add( this.DrawOptions.Position );
-            this.DrawOptions.Position = newposition;
+            History.Add( DrawOptions.Position );
+            DrawOptions.Position = newposition;
         }
 
         public void MoveV( Vector2 v, Maneuver maneuver )
         {
             switch ( maneuver ) {
                 case Maneuver.Successively:
-                    this.History.Add( this.DrawOptions.Position );
-                    this.DrawOptions.Position += v;
+                    History.Add( DrawOptions.Position );
+                    DrawOptions.Position += v;
                     break;
 
                 case Maneuver.Simultaneously:
-                    this.DrawOptions.Position += v;
+                    DrawOptions.Position += v;
 
-                    for ( var i = 0; i < this.History.Count; i++ ) {
-                        this.History[i] += v;
+                    for ( var i = 0; i < History.Count; i++ ) {
+                        History[i] += v;
                     }
 
                     break;
@@ -86,41 +88,41 @@ namespace LineOfBattle
 
         public void Shoot()
         {
-            switch ( this.Faction ) {
+            switch ( Faction ) {
                 case Faction.Ally:
-                    if ( Mouse.Any && this.CoolDownTimer <= 0 ) {
+                    if ( Mouse.Any && CoolDownTimer <= 0 ) {
                         var cursor = Mouse.Position;
-                        var posL = this.DrawOptions.Position;
+                        var posL = DrawOptions.Position;
                         var posR = Globals.Game.Allies.Units.First().DrawOptions.Position;
                         var posLR = (posL + posR) / 2;
                         var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : throw new InvalidOperationException());
                         var direction = (cursor - pos).GetNormalizedVector2();
                         var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
-                        var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
+                        var drawoptions = new DrawOptions( DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
                         Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
 
-                        this.CoolDownTimer += 1.0f / this.RoundsPerSecond;
+                        CoolDownTimer += 1.0f / RoundsPerSecond;
                     } else {
-                        this.CoolDownTimer -= 1.0f / 60.0f;
-                        this.CoolDownTimer = (this.CoolDownTimer < 0) ? 0 : this.CoolDownTimer;
+                        CoolDownTimer -= 1.0f / 60.0f;
+                        CoolDownTimer = (CoolDownTimer < 0) ? 0 : CoolDownTimer;
                     }
 
                     break;
 
                 case Faction.Enemy:
-                    if ( this.CoolDownTimer <= 0 ) {
+                    if ( CoolDownTimer <= 0 ) {
                         Vector2 radtovector2( double rad ) { return new Vector2( (float)Math.Cos( rad ), (float)Math.Sin( rad ) ); };
 
                         var theta = 2 * Math.PI * Globals.Game.Rand.NextDouble();
                         var direction = radtovector2( theta ).GetNormalizedVector2();
                         var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
-                        var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 1, 0.5f, 0, 1 ) );
+                        var drawoptions = new DrawOptions( DrawOptions.Position, 5, new RawColor4( 1, 0.5f, 0, 1 ) );
                         Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
 
-                        this.CoolDownTimer += 1.0f / this.RoundsPerSecond;                           
+                        CoolDownTimer += 1.0f / RoundsPerSecond;                           
                     } else {
-                        this.CoolDownTimer -= 1.0f / 60.0f;
-                        this.CoolDownTimer = (this.CoolDownTimer < 0) ? 0 : this.CoolDownTimer;
+                        CoolDownTimer -= 1.0f / 60.0f;
+                        CoolDownTimer = (CoolDownTimer < 0) ? 0 : CoolDownTimer;
                     }
 
                     break;
@@ -132,15 +134,15 @@ namespace LineOfBattle
 
         public Vector2 GetFollowPos()
         {
-            var res = this.History.First();
-            this.History.RemoveAt( 0 );
+            var res = History.First();
+            History.RemoveAt( 0 );
             return res;
         }
 
         public void Draw()
         {
-            var ellipse = new Ellipse( this.DrawOptions.Position.ToRawVector2(), this.DrawOptions.Size, this.DrawOptions.Size );
-            var brush = new SolidColorBrush( Globals.Target, this.DrawOptions.Color );
+            var ellipse = new Ellipse( DrawOptions.Position.ToRawVector2(), DrawOptions.Size, DrawOptions.Size );
+            var brush = new SolidColorBrush( Globals.Target, DrawOptions.Color );
             Globals.Target.DrawEllipse( ellipse, brush );
         }
     }

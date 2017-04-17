@@ -21,28 +21,28 @@ namespace LineOfBattle
         public GameControl()
         {
             Globals.Control = this;
-            this.IsGameInitialized = false;
+            IsGameInitialized = false;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="game">抽象クラスGameを実装したクラスの実体を渡す。</param>
-        public void SetGameInstance( Game game ) => this.GameInstance = game;
+        public void SetGameInstance( Game game ) => GameInstance = game;
 
         /// <summary>
         /// ゲームループ
         /// </summary>
         public override void Render( RenderTarget target )
         {
-            if ( !this.IsGameInitialized ) {
-                this.GameInstance.Initialize();
-                this.IsGameInitialized = true;
+            if ( !IsGameInitialized ) {
+                GameInstance.Initialize();
+                IsGameInitialized = true;
             }
 
             Globals.Target = target;
             target.Clear( new RawColor4( 0, 0, 0, 1 ) );
-            this.GameInstance.MainLoop();
+            GameInstance.MainLoop();
             GC.Collect();
         }
 
@@ -52,12 +52,12 @@ namespace LineOfBattle
         /// <param name="mainwindow"></param>
         public void SetEventHandlers( MainWindow mainwindow )
         {
-            mainwindow.KeyDown += this.KeyDownEventHandler;
-            mainwindow.KeyUp += this.KeyUpEventHandler;
+            mainwindow.KeyDown += KeyDownEventHandler;
+            mainwindow.KeyUp += KeyUpEventHandler;
 
-            mainwindow.MouseDown += this.MouseDownEventHandler;
-            mainwindow.MouseUp += this.MouseUpEventHandler;
-            mainwindow.MouseMove += this.MouseMoveEventHandler;
+            mainwindow.MouseDown += MouseDownEventHandler;
+            mainwindow.MouseUp += MouseUpEventHandler;
+            mainwindow.MouseMove += MouseMoveEventHandler;
         }
 
         #region Event Handlers

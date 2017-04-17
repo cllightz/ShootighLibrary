@@ -11,9 +11,9 @@ namespace LineOfBattle
 
         public Label( DrawOptions drawoptions, string text, TextAlignment textalignment = TextAlignment.Center )
         {
-            this.DrawOptions = drawoptions;
-            this.Text = text;
-            this.TextAlignment = textalignment;
+            DrawOptions = drawoptions;
+            Text = text;
+            TextAlignment = textalignment;
         }
 
         public DrawOptions DrawOptions { get; set; }
@@ -27,16 +27,16 @@ namespace LineOfBattle
         /// <param name="y"></param>
         public void Draw()
         {
-            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", this.DrawOptions.Size ) { TextAlignment = this.TextAlignment } )
-            using ( var brush = new SolidColorBrush( Globals.Target, this.DrawOptions.Color ) ) {
+            using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", DrawOptions.Size ) { TextAlignment = TextAlignment } )
+            using ( var brush = new SolidColorBrush( Globals.Target, DrawOptions.Color ) ) {
                 var rect = new RawRectangleF(
-                    this.DrawOptions.Position.X,
-                    this.DrawOptions.Position.Y,
-                    this.DrawOptions.Position.X + Globals.Target.Size.Width,
-                    this.DrawOptions.Position.Y + this.DrawOptions.Size
+                    DrawOptions.Position.X,
+                    DrawOptions.Position.Y,
+                    DrawOptions.Position.X + Globals.Target.Size.Width,
+                    DrawOptions.Position.Y + DrawOptions.Size
                     );
 
-                Globals.Target.DrawText( this.Text, format, rect, brush );
+                Globals.Target.DrawText( Text, format, rect, brush );
             }
         }
 

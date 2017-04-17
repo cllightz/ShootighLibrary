@@ -16,11 +16,12 @@ namespace LineOfBattle
 
         public DrawOptions( Vector2 position, float size, RawColor4 color )
         {
-            this.Position = position;
-            this.Size = size;
-            this.Color = color;
+            Position = position;
+            Size = size;
+            Color = color;
         }
 
-        public DrawOptions Clone => new DrawOptions( this.Position, this.Size, this.Color );
+        public DrawOptions Clone
+            => new DrawOptions( Position, Size, Color );
     }
 }

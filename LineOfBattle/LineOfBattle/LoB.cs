@@ -22,7 +22,8 @@ namespace LineOfBattle
         #endregion
 
         #region Constructor
-        public LoB() => this.Rand = new Random();
+        public LoB()
+            => Rand = new Random();
         #endregion
         
         /// <summary>
@@ -33,16 +34,16 @@ namespace LineOfBattle
         {
             Globals.Game = this;
 
-            this.ScheneState = ScheneState.Title;
+            ScheneState = ScheneState.Title;
 
-            this.Enemies = new List<Unit>();
-            this.AlliesShells = new List<Shell>();
-            this.EnemiesShells = new List<Shell>();
-            this.FrameCount = 0;
+            Enemies = new List<Unit>();
+            AlliesShells = new List<Shell>();
+            EnemiesShells = new List<Shell>();
+            FrameCount = 0;
 
-            var drawoptions = new DrawOptions( new Vector2( this.Width / 2, this.Height / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) );
+            var drawoptions = new DrawOptions( new Vector2( Width / 2, Height / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) );
 
-            this.Allies = new AlliesLine() {
+            Allies = new AlliesLine() {
                 new Unit( drawoptions.Clone, 10 ),
                 new Unit( drawoptions.Clone, 10 ),
                 new Unit( drawoptions.Clone, 10 ),
@@ -56,7 +57,7 @@ namespace LineOfBattle
         /// </summary>
         public override void MainLoop()
         {
-            switch ( this.ScheneState ) {
+            switch ( ScheneState ) {
                 case ScheneState.Title:
                     DrawTitle();
                     break;
@@ -72,13 +73,13 @@ namespace LineOfBattle
 
         private void BattleLogic()
         {
-            if ( this.FrameCount % 100 == 0 ) {
-                var theta = 2 * Math.PI * this.Rand.NextDouble();
+            if ( FrameCount % 100 == 0 ) {
+                var theta = 2 * Math.PI * Rand.NextDouble();
 
-                this.Enemies.Add(
+                Enemies.Add(
                     new Unit(
                         new DrawOptions(
-                            new Vector2( this.Width / 2, this.Height / 2 ),
+                            new Vector2( Width / 2, Height / 2 ),
                             5,
                             new RawColor4( 1, 0, 0, 1 )
                             ),
@@ -102,32 +103,33 @@ namespace LineOfBattle
             DrawAlliesShells();
             DrawEnemiesShells();
 
-            this.FrameCount++;
+            FrameCount++;
         }
 
         #region 移動・判定・描画
         private void MoveEnemies()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Move();
             }
         }
 
-        private void MoveAllies() => this.Allies.Move();
+        private void MoveAllies()
+            => Allies.Move();
 
         private void MoveAlliesShells()
         {
-            foreach ( var s in this.AlliesShells ) {
+            foreach ( var s in AlliesShells ) {
                 s.Move();
             }
 
-            if ( this.AlliesShells.Any() ) {
-                for ( var i = this.AlliesShells.Count - 1; 0 <= i; i-- ) {
-                    var x = this.AlliesShells[ i ].DrawOptions.Position.X;
-                    var y = this.AlliesShells[ i ].DrawOptions.Position.Y;
+            if ( AlliesShells.Any() ) {
+                for ( var i = AlliesShells.Count - 1; 0 <= i; i-- ) {
+                    var x = AlliesShells[ i ].DrawOptions.Position.X;
+                    var y = AlliesShells[ i ].DrawOptions.Position.Y;
 
                     if ( x < -100 || Globals.Target.Size.Width + 100 < x || y < -100 || Globals.Target.Size.Height + 100 < y ) {
-                        this.AlliesShells.RemoveAt( i );
+                        AlliesShells.RemoveAt( i );
                     }
                 }
             }
@@ -135,30 +137,30 @@ namespace LineOfBattle
 
         private void MoveEnemiesShells()
         {
-            foreach ( var s in this.EnemiesShells ) {
+            foreach ( var s in EnemiesShells ) {
                 s.Move();
             }
 
-            for ( var i = this.EnemiesShells.Count - 1; 0 <= i; i++ ) {
-                var x = this.EnemiesShells[ i ].DrawOptions.Position.X;
-                var y = this.EnemiesShells[ i ].DrawOptions.Position.Y;
+            for ( var i = EnemiesShells.Count - 1; 0 <= i; i++ ) {
+                var x = EnemiesShells[ i ].DrawOptions.Position.X;
+                var y = EnemiesShells[ i ].DrawOptions.Position.Y;
 
                 if ( x < -100 || Globals.Target.Size.Width + 100 < x || y < -100 || Globals.Target.Size.Height + 100 < y ) {
-                    this.EnemiesShells.RemoveAt( i );
+                    EnemiesShells.RemoveAt( i );
                 }
             }
         }
 
         private void ShootAlliesShells()
         {
-            foreach ( var u in this.Allies.Units ) {
+            foreach ( var u in Allies.Units ) {
                 u.Shoot();
             }
         }
 
         private void ShootEnemiesShells()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Shoot();
             }
         }
@@ -169,23 +171,24 @@ namespace LineOfBattle
 
         private void DrawEnemies()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Draw();
             }
         }
 
-        private void DrawAllies() => this.Allies.Draw();
+        private void DrawAllies()
+            => Allies.Draw();
 
         private void DrawAlliesShells()
         {
-            foreach ( var s in this.AlliesShells ) {
+            foreach ( var s in AlliesShells ) {
                 s.Draw();
             }
         }
 
         private void DrawEnemiesShells()
         {
-            foreach ( var s in this.EnemiesShells ) {
+            foreach ( var s in EnemiesShells ) {
                 s.Draw();
             }
         }
@@ -201,7 +204,7 @@ namespace LineOfBattle
             new Label( new DrawOptions( new Vector2( 0, 200 ), 25, white ), "Press Left Mouse Button to Start" ).Draw();
             
             if ( Mouse.Left ) {
-                this.ScheneState = ScheneState.Battle;
+                ScheneState = ScheneState.Battle;
             }
         }
     }

@@ -13,9 +13,9 @@ namespace LineOfBattle
         /// </summary>
         public MainWindow()
         {
-            this.InitializeComponent();
-            this.GameControl.SetGameInstance( new LoB() );
-            this.GameControl.SetEventHandlers( this );
+            InitializeComponent();
+            GameControl.SetGameInstance( new LoB() );
+            GameControl.SetEventHandlers( this );
         }
     }
 }

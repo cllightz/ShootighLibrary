@@ -10,10 +10,10 @@
         public float Width => (float)Globals.Control.ActualWidth;
         public float Height => (float)Globals.Control.ActualHeight;
         public float Padding => 10;
-        public float Left => this.Padding;
-        public float Right => this.Width - this.Padding;
-        public float Top => this.Padding;
-        public float Bottom => this.Height - this.Padding;
+        public float Left => Padding;
+        public float Right => Width - Padding;
+        public float Top => Padding;
+        public float Bottom => Height - Padding;
         #endregion
 
         #region Abstract Methods
