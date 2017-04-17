@@ -91,13 +91,13 @@ namespace LineOfBattle
                     if ( Mouse.Any && this.CoolDownTimer <= 0 ) {
                         var cursor = Mouse.Position;
                         var posL = this.DrawOptions.Position;
-                        var posR = Globals.Game.Allies.Units.First().DrawOptions.Position;
+                        var posR = Game.Allies.Units.First().DrawOptions.Position;
                         var posLR = (posL + posR) / 2;
                         var pos = Mouse.Left ? (Mouse.Right ? posLR : posL) : (Mouse.Right ? posR : throw new InvalidOperationException());
                         var direction = (cursor - pos).GetNormalizedVector2();
                         var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
                         var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 0, 1, 1, 1 ) );
-                        Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
+                        Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
 
                         this.CoolDownTimer += 1.0f / this.RoundsPerSecond;
                     } else {
@@ -111,11 +111,11 @@ namespace LineOfBattle
                     if ( this.CoolDownTimer <= 0 ) {
                         Vector2 radtovector2( double rad ) { return new Vector2( (float)Math.Cos( rad ), (float)Math.Sin( rad ) ); };
 
-                        var theta = 2 * Math.PI * Globals.Game.Rand.NextDouble();
+                        var theta = 2 * Math.PI * Game.Rand.NextDouble();
                         var direction = radtovector2( theta ).GetNormalizedVector2();
                         var velocity = 5 * direction; // TODO: 速度の係数をフィールドまたはプロパティにする。
                         var drawoptions = new DrawOptions( this.DrawOptions.Position, 5, new RawColor4( 1, 0.5f, 0, 1 ) );
-                        Globals.Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
+                        Game.AlliesShells.Add( new Shell( drawoptions, velocity ) );
 
                         this.CoolDownTimer += 1.0f / this.RoundsPerSecond;                           
                     } else {
@@ -140,8 +140,8 @@ namespace LineOfBattle
         public void Draw()
         {
             var ellipse = new Ellipse( this.DrawOptions.Position.ToRawVector2(), this.DrawOptions.Size, this.DrawOptions.Size );
-            var brush = new SolidColorBrush( Globals.Game.Target, this.DrawOptions.Color );
-            Globals.Game.Target.DrawEllipse( ellipse, brush );
+            var brush = new SolidColorBrush( Globals.Target, this.DrawOptions.Color );
+            Globals.Target.DrawEllipse( ellipse, brush );
         }
     }
 }

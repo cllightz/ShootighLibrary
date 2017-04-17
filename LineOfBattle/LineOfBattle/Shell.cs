@@ -20,8 +20,8 @@ namespace LineOfBattle
         public void Draw()
         {
             var ellipse = new Ellipse( this.DrawOptions.Position.ToRawVector2(), this.DrawOptions.Size, this.DrawOptions.Size );
-            var brush = new SolidColorBrush( Globals.Game.Target, this.DrawOptions.Color );
-            Globals.Game.Target.DrawEllipse( ellipse, brush );
+            var brush = new SolidColorBrush( Globals.Target, this.DrawOptions.Color );
+            Globals.Target.DrawEllipse( ellipse, brush );
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace LineOfBattle
+﻿using SharpDX.Direct2D1;
+
+namespace LineOfBattle
 {
     class Globals
     {
-        public static Game Game;
+        public static GameControl Control;
+        public static RenderTarget Target;
     }
 }

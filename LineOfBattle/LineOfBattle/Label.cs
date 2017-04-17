@@ -28,15 +28,15 @@ namespace LineOfBattle
         public void Draw()
         {
             using ( var format = new TextFormat( new SharpDX.DirectWrite.Factory(), "游ゴシック", this.DrawOptions.Size ) { TextAlignment = this.TextAlignment } )
-            using ( var brush = new SolidColorBrush( Globals.Game.Target, this.DrawOptions.Color ) ) {
+            using ( var brush = new SolidColorBrush( Globals.Target, this.DrawOptions.Color ) ) {
                 var rect = new RawRectangleF(
                     this.DrawOptions.Position.X,
                     this.DrawOptions.Position.Y,
-                    this.DrawOptions.Position.X + Globals.Game.Target.Size.Width,
+                    this.DrawOptions.Position.X + Globals.Target.Size.Width,
                     this.DrawOptions.Position.Y + this.DrawOptions.Size
                     );
 
-                Globals.Game.Target.DrawText( this.Text, format, rect, brush );
+                Globals.Target.DrawText( this.Text, format, rect, brush );
             }
         }
 

@@ -119,7 +119,7 @@ namespace LineOfBattle
         /// <param name="e"></param>
         private void MouseMoveEventHandler( object sender, MouseEventArgs e )
         {
-            var pos = e.GetPosition( this.gameControl );
+            var pos = e.GetPosition( this.GameControl );
             Mouse.X = (float)pos.X;
             Mouse.Y = (float)pos.Y;
         }

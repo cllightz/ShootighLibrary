@@ -4,61 +4,53 @@ using System.Linq;
 using System.Numerics;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-using SharpDX.DirectWrite;
 
 namespace LineOfBattle
 {
     /// <summary>
     /// ゲームのロジック
     /// </summary>
-    class Game : D2dControl.D2dControl
+    static class Game
     {
         #region Fields
-        public RenderTarget Target;
+        public static Random Rand = new Random();
 
-        public Random Rand = new Random();
-
-        public ScheneState State;
-        public AlliesLine Allies;
-        public List<Unit> Enemies;
-        public List<Shell> AlliesShells;
-        public List<Shell> EnemiesShells;
-        public ulong FrameCount;
-        private bool IsGameInitialized;
+        public static ScheneState State;
+        public static AlliesLine Allies;
+        public static List<Unit> Enemies;
+        public static List<Shell> AlliesShells;
+        public static List<Shell> EnemiesShells;
+        public static ulong FrameCount;
+        public static bool IsGameInitialized;
         #endregion
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Game()
-        {
-            Globals.Game = this;
-            this.State = ScheneState.Title;
-            this.IsGameInitialized = false;
-        }
-
         #region Properties
-        public float Padding => 10;
-        public float Left => this.Padding;
-        public float Right => (float)this.ActualWidth - this.Padding;
-        public float Top => this.Padding;
-        public float Bottom => (float)this.ActualHeight - this.Padding;
+        private static RenderTarget Target => Globals.Target;
+        public static float Width => (float)Globals.Control.ActualWidth;
+        public static float Height => (float)Globals.Control.ActualHeight;
+        public static float Padding => 10;
+        public static float Left => Padding;
+        public static float Right => Width - Padding;
+        public static float Top => Padding;
+        public static float Bottom => Height - Padding;
         #endregion
 
         /// <summary>
         /// 1回目のゲームループで呼ばれる初期化処理．
         /// RenderTargetの情報を必要とするものを記述する．
         /// </summary>
-        public void Initialize()
+        public static void Initialize()
         {
-            this.Enemies = new List<Unit>();
-            this.AlliesShells = new List<Shell>();
-            this.EnemiesShells = new List<Shell>();
-            this.FrameCount = 0;
+            State = ScheneState.Title;
 
-            var drawoptions = new DrawOptions( new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) );
+            Enemies = new List<Unit>();
+            AlliesShells = new List<Shell>();
+            EnemiesShells = new List<Shell>();
+            FrameCount = 0;
 
-            this.Allies = new AlliesLine() {
+            var drawoptions = new DrawOptions( new Vector2( Width / 2, Height / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) );
+
+            Allies = new AlliesLine() {
                 new Unit( drawoptions.Clone, 10 ),
                 new Unit( drawoptions.Clone, 10 ),
                 new Unit( drawoptions.Clone, 10 ),
@@ -66,24 +58,15 @@ namespace LineOfBattle
                 new Unit( drawoptions.Clone, 10 ),
             };
 
-            this.IsGameInitialized = true;
+            IsGameInitialized = true;
         }
 
         /// <summary>
         /// ゲームループ
         /// </summary>
-        public override void Render( RenderTarget target )
+        public static void MainLoop()
         {
-            if ( !this.IsGameInitialized ) {
-                Initialize();
-            }
-
-            this.Target = target;
-            GC.Collect();
-            System.Diagnostics.Debug.WriteLine( this.resCache.Count );
-            target.Clear( new RawColor4( 0, 0, 0, 1 ) );
-
-            switch ( this.State ) {
+            switch ( State ) {
                 case ScheneState.Title:
                     DrawTitle();
                     break;
@@ -97,11 +80,22 @@ namespace LineOfBattle
             }
         }
 
-        private void BattleLogic()
+        private static void BattleLogic()
         {
-            if ( this.FrameCount % 100 == 0 ) {
-                var theta = 2 * Math.PI * this.Rand.NextDouble();
-                this.Enemies.Add( new Unit( new DrawOptions( new Vector2( (float)this.ActualWidth / 2, (float)this.ActualHeight / 2 ), 5, new RawColor4( 1, 0, 0, 1 ) ), 1, pos => pos + new Vector2( (float)Math.Cos( theta ), (float)Math.Sin( theta ) ) ) );
+            if ( FrameCount % 100 == 0 ) {
+                var theta = 2 * Math.PI * Rand.NextDouble();
+
+                Enemies.Add(
+                    new Unit(
+                        new DrawOptions(
+                            new Vector2( Width / 2, Height / 2 ),
+                            5,
+                            new RawColor4( 1, 0, 0, 1 )
+                            ),
+                        1,
+                        pos => pos + new Vector2( (float)Math.Cos( theta ), (float)Math.Sin( theta ) )
+                        )
+                    );
             }
 
             MoveEnemies();
@@ -118,90 +112,90 @@ namespace LineOfBattle
             DrawAlliesShells();
             DrawEnemiesShells();
 
-            this.FrameCount++;
+            FrameCount++;
         }
 
         #region 移動・判定・描画
-        private void MoveEnemies()
+        private static void MoveEnemies()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Move();
             }
         }
 
-        private void MoveAllies() => this.Allies.Move();
+        private static void MoveAllies() => Allies.Move();
 
-        private void MoveAlliesShells()
+        private static void MoveAlliesShells()
         {
-            foreach ( var s in this.AlliesShells ) {
+            foreach ( var s in AlliesShells ) {
                 s.Move();
             }
 
-            if ( this.AlliesShells.Any() ) {
-                for ( var i = this.AlliesShells.Count - 1; 0 <= i; i-- ) {
-                    var x = this.AlliesShells[ i ].DrawOptions.Position.X;
-                    var y = this.AlliesShells[ i ].DrawOptions.Position.Y;
+            if ( AlliesShells.Any() ) {
+                for ( var i = AlliesShells.Count - 1; 0 <= i; i-- ) {
+                    var x = AlliesShells[ i ].DrawOptions.Position.X;
+                    var y = AlliesShells[ i ].DrawOptions.Position.Y;
 
-                    if ( x < -100 || this.Target.Size.Width + 100 < x || y < -100 || this.Target.Size.Height + 100 < y ) {
-                        this.AlliesShells.RemoveAt( i );
+                    if ( x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y ) {
+                        AlliesShells.RemoveAt( i );
                     }
                 }
             }
         }
 
-        private void MoveEnemiesShells()
+        private static void MoveEnemiesShells()
         {
-            foreach ( var s in this.EnemiesShells ) {
+            foreach ( var s in EnemiesShells ) {
                 s.Move();
             }
 
-            for ( var i = this.EnemiesShells.Count - 1; 0 <= i; i++ ) {
-                var x = this.EnemiesShells[ i ].DrawOptions.Position.X;
-                var y = this.EnemiesShells[ i ].DrawOptions.Position.Y;
+            for ( var i = EnemiesShells.Count - 1; 0 <= i; i++ ) {
+                var x = EnemiesShells[ i ].DrawOptions.Position.X;
+                var y = EnemiesShells[ i ].DrawOptions.Position.Y;
 
-                if ( x < -100 || this.Target.Size.Width + 100 < x || y < -100 || this.Target.Size.Height + 100 < y ) {
-                    this.EnemiesShells.RemoveAt( i );
+                if ( x < -100 || Target.Size.Width + 100 < x || y < -100 || Target.Size.Height + 100 < y ) {
+                    EnemiesShells.RemoveAt( i );
                 }
             }
         }
 
-        private void ShootAlliesShells()
+        private static void ShootAlliesShells()
         {
-            foreach ( var u in this.Allies.Units ) {
+            foreach ( var u in Allies.Units ) {
                 u.Shoot();
             }
         }
 
-        private void ShootEnemiesShells()
+        private static void ShootEnemiesShells()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Shoot();
             }
         }
 
-        private void CalculateAlliesShellsCollision() { }
+        private static void CalculateAlliesShellsCollision() { }
 
-        private void CalculateEnemiesShellsCollision() { }
+        private static void CalculateEnemiesShellsCollision() { }
 
-        private void DrawEnemies()
+        private static void DrawEnemies()
         {
-            foreach ( var u in this.Enemies ) {
+            foreach ( var u in Enemies ) {
                 u.Draw();
             }
         }
 
-        private void DrawAllies() => this.Allies.Draw();
+        private static void DrawAllies() => Allies.Draw();
 
-        private void DrawAlliesShells()
+        private static void DrawAlliesShells()
         {
-            foreach ( var s in this.AlliesShells ) {
+            foreach ( var s in AlliesShells ) {
                 s.Draw();
             }
         }
 
-        private void DrawEnemiesShells()
+        private static void DrawEnemiesShells()
         {
-            foreach ( var s in this.EnemiesShells ) {
+            foreach ( var s in EnemiesShells ) {
                 s.Draw();
             }
         }
@@ -210,14 +204,14 @@ namespace LineOfBattle
         /// <summary>
         /// タイトル画面の描画
         /// </summary>
-        private void DrawTitle()
+        private static void DrawTitle()
         {
             var white = new RawColor4( 1, 1, 1, 1 );
             new Label( new DrawOptions( new Vector2( 0, 100 ), 50, white ), "Line of Battle" ).Draw();
             new Label( new DrawOptions( new Vector2( 0, 200 ), 25, white ), "Press Left Mouse Button to Start" ).Draw();
             
             if ( Mouse.Left ) {
-                this.State = ScheneState.Battle;
+                State = ScheneState.Battle;
             }
         }
     }

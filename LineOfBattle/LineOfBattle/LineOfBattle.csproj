@@ -119,6 +119,7 @@
     </ApplicationDefinition>
     <Compile Include="DrawOptions.cs" />
     <Compile Include="Faction.cs" />
+    <Compile Include="GameControl.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Key.cs" />
