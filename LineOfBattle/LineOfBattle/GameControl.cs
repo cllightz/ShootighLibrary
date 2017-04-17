@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
@@ -14,6 +10,7 @@ namespace LineOfBattle
     class GameControl : D2dControl.D2dControl
     {
         #region Fields
+        private Game GameInstance;
         private bool IsGameInitialized;
         #endregion
 
@@ -27,18 +24,24 @@ namespace LineOfBattle
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        public void SetGameInstance( Game gameInstance ) => this.GameInstance = gameInstance;
+
+        /// <summary>
         /// ゲームループ
         /// </summary>
         public override void Render( RenderTarget target )
         {
             if ( !this.IsGameInitialized ) {
-                Game.Initialize();
+                this.GameInstance.Initialize();
                 this.IsGameInitialized = true;
             }
 
             Globals.Target = target;
             target.Clear( new RawColor4( 0, 0, 0, 1 ) );
-            Game.MainLoop();
+            this.GameInstance.MainLoop();
             GC.Collect();
         }
     }

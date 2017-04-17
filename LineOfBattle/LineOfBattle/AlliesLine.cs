@@ -48,27 +48,27 @@ namespace LineOfBattle
             get {
                 (var x, var y) = (this.Units[ 0 ].DrawOptions.Position + Speed * Key.Direction).Tuple();
 
-                if ( Game.Left <= x && x <= Game.Right && Game.Top <= y && y <= Game.Bottom ) {
+                if ( Globals.LoB.Left <= x && x <= Globals.LoB.Right && Globals.LoB.Top <= y && y <= Globals.LoB.Bottom ) {
                     return true;
                 }
 
-                if ( !(Game.Left <= x && x <= Game.Right || Game.Top <= y && y <= Game.Bottom) ) {
+                if ( !(Globals.LoB.Left <= x && x <= Globals.LoB.Right || Globals.LoB.Top <= y && y <= Globals.LoB.Bottom) ) {
                     return false;
                 }
 
-                if ( Key.A && (Key.W || Key.S) && x < Game.Left ) {
+                if ( Key.A && (Key.W || Key.S) && x < Globals.LoB.Left ) {
                     return true;
                 }
 
-                if ( Key.D && (Key.W || Key.S) && Game.Right < x ) {
+                if ( Key.D && (Key.W || Key.S) && Globals.LoB.Right < x ) {
                     return true;
                 }
 
-                if ( Key.W && (Key.A || Key.D) && y < Game.Top ) {
+                if ( Key.W && (Key.A || Key.D) && y < Globals.LoB.Top ) {
                     return true;
                 }
 
-                if ( Key.S && (Key.A || Key.D) && Game.Left < y ) {
+                if ( Key.S && (Key.A || Key.D) && Globals.LoB.Left < y ) {
                     return true;
                 }
 
@@ -84,11 +84,11 @@ namespace LineOfBattle
             var x = newposition.X;
             var y = newposition.Y;
 
-            if ( x < Game.Left || Game.Right < x ) {
+            if ( x < Globals.LoB.Left || Globals.LoB.Right < x ) {
                 return new Vector2( 0, Speed * to1( Key.Direction.Y ) );
             }
 
-            if ( y < Game.Top || Game.Bottom < y ) {
+            if ( y < Globals.LoB.Top || Globals.LoB.Bottom < y ) {
                 return new Vector2( Speed * to1( Key.Direction.X ), 0 );
             }
 

@@ -122,6 +122,7 @@
     <Compile Include="GameControl.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IDrawable.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="Maneuver.cs" />
     <Compile Include="Mouse.cs" />
@@ -139,7 +140,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Game.cs" />
+    <Compile Include="LoB.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -15,6 +15,8 @@ namespace LineOfBattle
         {
             this.InitializeComponent();
 
+            this.GameControl.SetGameInstance( new LoB() );
+
             this.KeyDown += this.KeyDownEventHandler;
             this.KeyUp += this.KeyUpEventHandler;
 

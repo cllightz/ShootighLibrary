@@ -6,5 +6,6 @@ namespace LineOfBattle
     {
         public static GameControl Control;
         public static RenderTarget Target;
+        public static LoB LoB;
     }
 }
