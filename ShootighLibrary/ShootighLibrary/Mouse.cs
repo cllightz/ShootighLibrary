@@ -2,7 +2,7 @@
 
 namespace ShootighLibrary
 {
-    static class Mouse
+    public static class Mouse
     {
         public static bool Left;
         public static bool Right;

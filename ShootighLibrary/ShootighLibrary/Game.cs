@@ -1,14 +1,20 @@
-﻿namespace ShootighLibrary
+﻿using SharpDX.Direct2D1;
+
+namespace ShootighLibrary
 {
-    abstract class Game
+    public abstract class Game
     {
         #region Fields;
-        public ScheneState ScheneState;
+        public GameControl Control;
+        #endregion
+
+        #region Constuctor
+        public Game( GameControl control ) => Control = control;
         #endregion
 
         #region Properties
-        public float Width => (float)Globals.Control.ActualWidth;
-        public float Height => (float)Globals.Control.ActualHeight;
+        public float Width => (float)Control.ActualWidth;
+        public float Height => (float)Control.ActualHeight;
         public float Padding => 10;
         public float Left => Padding;
         public float Right => Width - Padding;
@@ -18,7 +24,7 @@
 
         #region Abstract Methods
         public abstract void Initialize();
-        public abstract void MainLoop();
+        public abstract void MainLoop( RenderTarget target );
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
@@ -8,7 +9,7 @@ namespace ShootighLibrary
     /// <summary>
     /// ゲームのコントロール
     /// </summary>
-    class GameControl : D2dControl.D2dControl
+    public class GameControl : D2dControl.D2dControl
     {
         #region Fields
         private Game GameInstance;
@@ -18,11 +19,7 @@ namespace ShootighLibrary
         /// <summary>
         /// コントロールのコンストラクタ。
         /// </summary>
-        public GameControl()
-        {
-            Globals.Control = this;
-            IsGameInitialized = false;
-        }
+        public GameControl() => IsGameInitialized = false;
 
         /// <summary>
         /// 
@@ -40,9 +37,8 @@ namespace ShootighLibrary
                 IsGameInitialized = true;
             }
 
-            Globals.Target = target;
             target.Clear( new RawColor4( 0, 0, 0, 1 ) );
-            GameInstance.MainLoop();
+            GameInstance.MainLoop( target );
             GC.Collect();
         }
 
@@ -50,7 +46,7 @@ namespace ShootighLibrary
         /// 引数で渡されたMainWindowの実体の各種イベントハンドラを設定する。
         /// </summary>
         /// <param name="mainwindow"></param>
-        public void SetEventHandlers( MainWindow mainwindow )
+        public void SetEventHandlers( Window mainwindow )
         {
             mainwindow.KeyDown += KeyDownEventHandler;
             mainwindow.KeyUp += KeyUpEventHandler;

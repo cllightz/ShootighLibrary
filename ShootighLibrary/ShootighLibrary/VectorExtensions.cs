@@ -3,7 +3,7 @@ using SharpDX.Mathematics.Interop;
 
 namespace ShootighLibrary
 {
-    static class VectorExtensions
+    public static class VectorExtensions
     {
         public static RawVector2 ToRawVector2( this Vector2 v ) => new RawVector2() { X = v.X, Y = v.Y };
         public static Vector2 ToVector2( this RawVector2 v ) => new Vector2( v.X, v.Y );

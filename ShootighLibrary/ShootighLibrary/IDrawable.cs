@@ -1,9 +1,11 @@
-﻿namespace ShootighLibrary
+﻿using SharpDX.Direct2D1;
+
+namespace ShootighLibrary
 {
-    interface IDrawable
+    public interface IDrawable
     {
         DrawOptions DrawOptions { get; set; }
         void Move();
-        void Draw();
+        void Draw( RenderTarget target );
     }
 }

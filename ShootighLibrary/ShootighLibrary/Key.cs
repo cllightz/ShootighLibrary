@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace ShootighLibrary
 {
-    static class Key
+    public static class Key
     {
         public static bool W;
         public static bool A;
