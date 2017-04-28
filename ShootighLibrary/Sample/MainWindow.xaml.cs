@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Sample
 {
@@ -7,11 +8,18 @@ namespace Sample
     /// </summary>
     public partial class MainWindow : Window
     {
+        Grid SampleGrid;
+        SampleControl MainControl;
+
         public MainWindow()
         {
             InitializeComponent();
-            SampleControl.SetGameInstance( new SampleGame( SampleControl ) );
-            SampleControl.SetEventHandlers( this );
+            SampleGrid = new Grid();
+            AddChild( SampleGrid );
+            MainControl = new SampleControl();
+            SampleGrid.Children.Add( MainControl );
+            MainControl.SetGameInstance( new SampleGame( MainControl ) );
+            MainControl.SetEventHandlers( this );
         }
     }
 }
