@@ -28,8 +28,8 @@ WPF で DirectX による描画が可能なコントロールを実装した [da
 __\*.\*.\*__ の部分の数字が最も大きいものをダウンロードしてください。
 
 ### NuGet パッケージソースの設定
-以下の[Temarin氏](http://qiita.com/Temarin "Qiita")の記事を参考にしながら NuGet のパッケージソースを設定し、
-ダウンロードした .nupkg のファイルを NuGet から参照できるようにしてください。
+NuGet のパッケージソースを設定し、
+ダウンロードした .nupkg のファイルを NuGet から参照できるようにしてください。設定方法については、[Temarin氏](http://qiita.com/Temarin "Qiita")の記事が参考になると思います。
 
 ### NuGet 経由で ShootighLibrary をインストール
 「参照」のタブでパッケージソースを「すべて」にして、"ShootighLibrary" と検索し、出てきたものをインストールしてください。
