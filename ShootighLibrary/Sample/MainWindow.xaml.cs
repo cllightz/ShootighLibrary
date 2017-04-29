@@ -8,17 +8,24 @@ namespace Sample
     /// </summary>
     public partial class MainWindow : Window
     {
-        Grid SampleGrid;
-        SampleControl MainControl;
-
         public MainWindow()
         {
             InitializeComponent();
-            SampleGrid = new Grid();
-            AddChild( SampleGrid );
-            MainControl = new SampleControl();
-            SampleGrid.Children.Add( MainControl );
+
+            // 注意: MainWindow.xaml にデフォルトで記述されている <Grid> </Grid> は削除しておく。
+
+            // MainWindow の子要素に Grid を追加。
+            var MainGrid = new Grid();
+            AddChild( MainGrid );
+
+            // Grid の子要素に GameControl のインスタンス MainControl を追加。
+            var MainControl = new ShootighLibrary.GameControl();
+            MainGrid.Children.Add( MainControl );
+
+            // MainControl に初期化されたゲームのロジックのインスタンスを渡す。
             MainControl.SetGameInstance( new SampleGame( MainControl ) );
+
+            // MainWindow でのイベントを登録する。
             MainControl.SetEventHandlers( this );
         }
     }

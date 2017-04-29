@@ -12,24 +12,37 @@ namespace ShootighLibrary
     public class GameControl : D2dControl.D2dControl
     {
         #region Fields
+        /// <summary>
+        /// GameControl のインスタンスが保持するゲームのロジックのインスタンス。
+        /// </summary>
         private Game GameInstance;
+
+        /// <summary>
+        /// GameInstance.Initialize() を呼び出したかどうかのフラグ。
+        /// </summary>
         private bool IsGameInitialized;
         #endregion
 
+        #region Constructor
         /// <summary>
         /// コントロールのコンストラクタ。
         /// </summary>
-        public GameControl() => IsGameInitialized = false;
+        public GameControl()
+            => IsGameInitialized = false;
+        #endregion
 
+        #region Methods
         /// <summary>
-        /// 
+        /// MainWindow から抽象クラス Game を実装したクラスのインスタンスを渡す。
         /// </summary>
-        /// <param name="game">抽象クラスGameを実装したクラスの実体を渡す。</param>
-        public void SetGameInstance( Game game ) => GameInstance = game;
-
+        /// <param name="game">抽象クラス Game を実装したクラスのインスタンスを渡す。</param>
+        public void SetGameInstance( Game game )
+            => GameInstance = game;
+        
         /// <summary>
-        /// ゲームループ
+        /// 毎フレーム呼び出されるメソッド。
         /// </summary>
+        /// <param name="target"></param>
         public override void Render( RenderTarget target )
         {
             if ( !IsGameInitialized ) {
@@ -43,9 +56,9 @@ namespace ShootighLibrary
         }
 
         /// <summary>
-        /// 引数で渡されたMainWindowの実体の各種イベントハンドラを設定する。
+        /// 引数で渡された MainWindow のインスタンスの各種イベントハンドラを設定する。
         /// </summary>
-        /// <param name="mainwindow"></param>
+        /// <param name="mainwindow">MainWindow のインスタンスを渡す。</param>
         public void SetEventHandlers( Window mainwindow )
         {
             mainwindow.KeyDown += KeyDownEventHandler;
@@ -55,10 +68,11 @@ namespace ShootighLibrary
             mainwindow.MouseUp += MouseUpEventHandler;
             mainwindow.MouseMove += MouseMoveEventHandler;
         }
+        #endregion
 
         #region Event Handlers
         /// <summary>
-        /// キーを押した時のイベントを処理
+        /// キーを押した時のイベントハンドラ。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -84,7 +98,7 @@ namespace ShootighLibrary
         }
 
         /// <summary>
-        /// キーを離した時のイベントを処理
+        /// キーを離した時のイベントハンドラ。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -110,7 +124,7 @@ namespace ShootighLibrary
         }
 
         /// <summary>
-        /// マウスボタンを押した時のイベントを処理
+        /// マウスボタンを押した時のイベントハンドラ。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -128,7 +142,7 @@ namespace ShootighLibrary
         }
 
         /// <summary>
-        /// マウスボタンを離した時のイベントを処理
+        /// マウスボタンを離した時のイベントハンドラ。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -146,7 +160,7 @@ namespace ShootighLibrary
         }
 
         /// <summary>
-        /// マウスカーソルを動かした時のイベントを処理
+        /// マウスカーソルを動かした時のイベントハンドラ。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

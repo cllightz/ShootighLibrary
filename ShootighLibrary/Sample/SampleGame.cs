@@ -1,30 +1,19 @@
-﻿using System.Numerics;
-using SharpDX.Direct2D1;
-using SharpDX.Mathematics.Interop;
-using ShootighLibrary;
-
-namespace Sample
+﻿namespace Sample
 {
-    class SampleGame : Game
+    class SampleGame : ShootighLibrary.Game
     {
-        #region Fields
         public Ball Ball;
-        #endregion
 
-        #region Constructor
-        public SampleGame( GameControl control ) : base( control )
+        public SampleGame( ShootighLibrary.GameControl control ) : base( control )
             => Control = control;
-        #endregion
 
-        #region Abstract methods implementations
         public override void Initialize()
-            => Ball = new Ball( new DrawOptions( new Vector2( Width / 2, Height / 2 ), 6, new RawColor4( 0, 1, 0, 1 ) ) );
+            => Ball = new Ball( new ShootighLibrary.DrawOptions( new System.Numerics.Vector2( Width / 2, Height / 2 ), 6, new SharpDX.Mathematics.Interop.RawColor4( 0, 1, 0, 1 ) ) );
 
-        public override void MainLoop( RenderTarget target )
+        public override void MainLoop( SharpDX.Direct2D1.RenderTarget target )
         {
             Ball.Move();
             Ball.Draw( target );
         }
-        #endregion
     }
 }
