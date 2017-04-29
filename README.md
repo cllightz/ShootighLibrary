@@ -1,14 +1,15 @@
 # 概要
-これは、WPF で DirectX による描画が可能なコントロールを実装した [dalance氏](http://qiita.com/dalance "Qiita") の D2dControl ([GitHub](https://github.com/dalance/D2dControl "GitHub"), [Qiita](http://qiita.com/dalance/items/f1af272279ac9b4f9dc9 "Qiita")) の、2D ゲーム向けのラッパークラスライブラリです。
+WPF で DirectX による描画が可能なコントロールを実装した [dalance氏](http://qiita.com/dalance "Qiita") の D2dControl ([GitHub](https://github.com/dalance/D2dControl "GitHub"), [Qiita](http://qiita.com/dalance/items/f1af272279ac9b4f9dc9 "Qiita")) の、2D ゲーム向けのラッパークラスライブラリです。
+シュータイライブラリと読みます。
 
 ## ライセンス
-このライブラリに関してはひとまず MIT ライセンスとします。
+ひとまず MIT ライセンスとします。
 
 ## 動作環境
+これ以外の環境でも動作するかもしれませんが、確認していません。
 - Windows 7 以降の 64bit Windows
 - .NET Framework 4.6.2 以上
 - Visual Studio 2017
-これ以外の環境でも動作するかもしれませんが、確認していません。
 
 ## 依存しているパッケージ
 - D2dControl (v1.1.6)
@@ -31,7 +32,7 @@ __\*.\*.\*__ の部分の数字が最も大きいものをダウンロードし�
 ダウンロードした .nupkg のファイルを NuGet から参照できるようにしてください。
 
 ### NuGet 経由で ShootighLibrary をインストール
-「参照」のタブで "ShootighLibrary" 等と検索し、出てきたものをインストールしてください。
+「参照」のタブでパッケージソースを「すべて」にして、"ShootighLibrary" と検索し、出てきたものをインストールしてください。
 
 ## 最低限のコーディング
 ### プロジェクトの作成
