@@ -21,27 +21,29 @@ WPF で DirectX による描画が可能なコントロールを実装した [da
 - System.Numerics.Vectors (v4.3.0)
 - System.ValueTuple (v4.3.0)
 
-# 使用方法
-## 準備
-### ファイルをダウンロード
+# 使用の準備
+## ファイルをダウンロード
 まずリポジトリのファイル群のトップ階層にあるいくつかの __ShootighLibrary.\*.\*.\*.nupkg__ の内、
 __\*.\*.\*__ の部分の数字が最も大きいものをダウンロードしてください。
 
-### NuGet パッケージソースの設定
+## NuGet パッケージソースの設定
 NuGet のパッケージソースを設定し、
 ダウンロードした .nupkg のファイルを NuGet から参照できるようにしてください。設定方法については、[Temarin氏](http://qiita.com/Temarin "Qiita")の記事が参考になると思います。
 
-### NuGet 経由で ShootighLibrary をインストール
+## NuGet 経由で ShootighLibrary をインストール
 「参照」のタブでパッケージソースを「すべて」にして、"ShootighLibrary" と検索し、出てきたものをインストールしてください。
 
-## 最低限のコーディング
-### プロジェクトの作成
+# 最低限のコーディング
+## プロジェクトの作成
 「新しいプロジェクト」で「Visual C#」の「WPF アプリ (.NET Framework)」を選択してください。
 
-### MainWindow.xaml の修正箇所
+## プロジェクトのプロパティ
+プロジェクトのプロパティの「ビルド」タブの「プラットフォームターゲット」を「Debug」「Release」ともに「x64」にしてください。
+
+## MainWindow.xaml の修正箇所
 `MainWindow.xaml` の `<Grid>` と `</Grid>` を削除してください。
 
-### MainWindow.xaml.cs の修正箇所
+## MainWindow.xaml.cs の修正箇所
 `MainWindow.xaml.cs` のクラス `MainWindow` のコンストラクタ `MainWindow()` の `InitializeComponent()` 以降に、
 以下のコードを追加してください。
 
@@ -54,9 +56,12 @@ MainControl.SetGameInstance( new SampleGame( MainControl ) );
 MainControl.SetEventHandlers( this );
 ```
 
-### 抽象クラス Game の実装
+## 抽象クラス Game の実装
 `class SampleGame : ShootighLibrary.Game` のようにして、抽象クラス `Game` を継承・実装してください。
 必要なメソッドは以下の通りです。
 - コンストラクタ `public SampleGame( ShootighLibrary.GameControl control ) : base( control ) => Control = control`
 - 抽象メソッドの実装 `public override void Initialize() { /* 初期化処理 */ }`
 - 抽象メソッドの実装 `public override void MainLoop( SharpDX.Direct2D1.RenderTarget target ) { /* 毎フレームの処理 */ }`
+
+## デバッグ実行
+今のところ、「マイコードのみ」は無効にしないとデバッグできないようです。
