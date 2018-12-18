@@ -45,6 +45,10 @@ namespace ShootighLibrary
         /// <param name="target"></param>
         public override void Render( RenderTarget target )
         {
+            if ( GameInstance == null ) {
+                return;
+            }
+
             if ( !IsGameInitialized ) {
                 GameInstance.Initialize();
                 IsGameInitialized = true;
